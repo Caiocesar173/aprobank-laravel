@@ -22,7 +22,7 @@ class BankSlipController extends Controller
     {
         if(!isset($request['payerId']))
         {
-            if(!Validation::validate($request, ['']))
+            if(!Validation::validate($request, ['payerId', 'value', 'description', 'instruction1', 'instruction2', 'instruction3', 'dueDate', 'penaltyType', 'penltyValue', 'feeType', 'feeValue', 'discountType', 'discountValue', 'dueDateDiscount']))
                 return ApiReturn::ErrorMessage("Dados invalidos");
 
             return BankSlip::create($request);
@@ -33,7 +33,7 @@ class BankSlipController extends Controller
 
     public function createPayer($request)
     {
-          if(!Validation::validate($request, ['']))
+          if(!Validation::validate($request, ['document', 'name', 'celphone', 'birthday', 'email', 'zip', 'street', 'number', 'complement', 'district', 'city', 'state', 'value', 'description', 'instruction1', 'instruction2', 'instruction3', 'dueDate']))
                 return ApiReturn::ErrorMessage("Dados invalidos");
 
             return BankSlip::createPayer($request);
@@ -42,16 +42,6 @@ class BankSlipController extends Controller
     public function list($id = null)
     {
         return BankSlip::list($id);
-    }
-
-    public function edit($id, Request $request)
-    {
-        if(!Validation::validate($request, ['']) 
-        && $id != null )
-            return ApiReturn::ErrorMessage("Dados invalidos");
-
-        $request->request->add(['id' => $id]); 
-        return BankSlip::edit($request);
     }
 
     public function delete($id)

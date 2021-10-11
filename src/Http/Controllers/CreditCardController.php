@@ -20,10 +20,18 @@ class CreditCardController extends Controller
 
     public function create(Request $request)
     {
-        if(!Validation::validate($request, ['']))
+        if(!Validation::validate($request, ['payerId', 'parcel', 'value', 'capture', 'name', 'number', 'cvv', 'month', 'year']))
             return ApiReturn::ErrorMessage("Dados invalidos");
 
         return CreditCard::create($request);
+    }
+
+    public function createSimple(Request $request)
+    {
+        if(!Validation::validate($request, ['document', 'cellphone', 'parcel', 'value', 'capture', 'name', 'number', 'cvv', 'month', 'year']))
+            return ApiReturn::ErrorMessage("Dados invalidos");
+
+        return CreditCard::createSimple($request);
     }
 
     public function list($id = null)
@@ -31,27 +39,9 @@ class CreditCardController extends Controller
         return CreditCard::list($id);
     }
 
-    public function edit($id, Request $request)
-    {
-        if(!Validation::validate($request, ['']) 
-        && $id != null )
-            return ApiReturn::ErrorMessage("Dados invalidos");
-
-        $request->request->add(['id' => $id]); 
-        return CreditCard::edit($request);
-    }
-
-    public function delete($id)
-    {
-        if(!empty($id) && $id != null)
-            return ApiReturn::ErrorMessage("Dados invalidos");
-
-        return CreditCard::deleteCreditCard($id);
-    }
-
     public function charge(Request $request)
     {
-        if(!Validation::validate($request, ['']))
+        if(!Validation::validate($request, ['value', 'id']))
             return ApiReturn::ErrorMessage("Dados invalidos");
 
         return CreditCard::charge($request);
@@ -59,7 +49,7 @@ class CreditCardController extends Controller
 
     public function chargeback(Request $request)
     {
-        if(!Validation::validate($request, ['']))
+        if(!Validation::validate($request, ['id']))
             return ApiReturn::ErrorMessage("Dados invalidos");
 
         return CreditCard::chargeback($request);

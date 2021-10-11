@@ -20,7 +20,7 @@ class BankAccountController extends Controller
 
     public function create(Request $request)
     {
-        if(!Validation::validate($request, ['']))
+        if(!Validation::validate($request, ['bankCode', 'agency', 'type', 'account']))
             return ApiReturn::ErrorMessage("Dados invalidos");
 
         return BankAccount::create($request);

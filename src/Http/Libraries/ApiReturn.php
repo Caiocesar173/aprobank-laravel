@@ -1,6 +1,6 @@
 <?php 
 
-namespace Aprobank\Libraries;
+namespace Caiocesar173\Aprobank\Http\Libraries;
 
 use Response;
 

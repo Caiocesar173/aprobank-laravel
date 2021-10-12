@@ -20,7 +20,7 @@ class SubscritionController extends Controller
 
     public function create(Request $request)
     {
-        if(!Validation::validate($request, ['']))
+        if(!Validation::validate($request, ['planId', 'payerId']))
             return ApiReturn::ErrorMessage("Dados invalidos");
 
         return Subscrition::create($request);

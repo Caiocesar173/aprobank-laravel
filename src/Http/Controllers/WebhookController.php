@@ -20,7 +20,7 @@ class WebhookController extends Controller
 
     public function create(Request $request)
     {
-        if(!Validation::validate($request, ['']))
+        if(!Validation::validate($request, ['accountId', 'url', 'description']))
             return ApiReturn::ErrorMessage("Dados invalidos");
 
         return Webhook::create($request);
@@ -29,16 +29,6 @@ class WebhookController extends Controller
     public function list($id = null)
     {
         return Webhook::list($id);
-    }
-
-    public function edit($id, Request $request)
-    {
-        if(!Validation::validate($request, ['']) 
-        && $id != null )
-            return ApiReturn::ErrorMessage("Dados invalidos");
-
-        $request->request->add(['id' => $id]); 
-        return Webhook::edit($request);
     }
 
     public function delete($id)

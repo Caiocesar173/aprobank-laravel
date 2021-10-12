@@ -33,7 +33,7 @@ class SubscritionPlanController extends Controller
 
     public function edit($id, Request $request)
     {
-        if(!Validation::validate($request, ['']) 
+        if(!Validation::validate($request, ['name', 'value', 'frequency', 'description']) 
         && $id != null )
             return ApiReturn::ErrorMessage("Dados invalidos");
 

@@ -20,7 +20,7 @@ class DocumentController extends Controller
 
     public function create(Request $request)
     {
-        if(!Validation::validate($request, ['']))
+        if(!Validation::validate($request, ['name', 'document', 'celphone', 'birthday', 'email', 'zip', 'street', 'number', 'complement', 'district', 'city', 'state']))
             return ApiReturn::ErrorMessage("Dados invalidos");
 
         return Document::create($request);
@@ -33,7 +33,7 @@ class DocumentController extends Controller
 
     public function edit($id, Request $request)
     {
-        if(!Validation::validate($request, ['']) 
+        if(!Validation::validate($request, ['name', 'celphone', 'email', 'zip', 'street', 'number', 'complement', 'district', 'city', 'state']) 
         && $id != null )
             return ApiReturn::ErrorMessage("Dados invalidos");
 
@@ -51,7 +51,7 @@ class DocumentController extends Controller
 
     public function associate(Request $request) 
     {
-        if(!Validation::validate($request, ['']))
+        if(!Validation::validate($request, ['payerId', 'name', 'number', 'cvv', 'month', 'year']))
             return ApiReturn::ErrorMessage("Dados invalidos");
 
         return Document::associate($request);

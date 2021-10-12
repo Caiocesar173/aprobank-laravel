@@ -70,10 +70,11 @@ class CreditCard extends Model
 
     public static function list($id = null)
     {
+        $url = self::$url;
         if($id != null)
-            self::$url = self::$url.'/'.$id;
+            $url = (self::$url.'/'.$id);
 
-        $response = Aprobank::get(self::$url);
+        $response = Aprobank::get($url);
 
         if(isset($response['data']) || isset($response['id']))
             return $response;

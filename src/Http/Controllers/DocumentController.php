@@ -20,7 +20,7 @@ class DocumentController extends Controller
 
     public function create(Request $request)
     {
-        if(!Validation::validate($request, ['']))
+        if(!Validation::validate($request, ['category', 'file', 'description', 'meta']))
             return ApiReturn::ErrorMessage("Dados invalidos");
 
         return Document::create($request);
@@ -29,16 +29,6 @@ class DocumentController extends Controller
     public function list($id = null)
     {
         return Document::list($id);
-    }
-
-    public function edit($id, Request $request)
-    {
-        if(!Validation::validate($request, ['']) 
-        && $id != null )
-            return ApiReturn::ErrorMessage("Dados invalidos");
-
-        $request->request->add(['id' => $id]); 
-        return Document::edit($request);
     }
 
     public function delete($id)

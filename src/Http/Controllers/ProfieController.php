@@ -23,10 +23,9 @@ class DocumentController extends Controller
         return Document::list($id);
     }
 
-    public function edit($id, Request $request)
+    public function edit(Request $request)
     {
-        if(!Validation::validate($request, ['']) 
-        && $id != null )
+        if(!Validation::validate($request, ['name', 'celphone', 'corporateName', 'email', 'site', 'zip', 'street', 'number', 'complement', 'district', 'city', 'state']) )
             return ApiReturn::ErrorMessage("Dados invalidos");
 
         $request->request->add(['id' => $id]); 

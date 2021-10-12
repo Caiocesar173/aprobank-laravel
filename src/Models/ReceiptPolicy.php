@@ -5,9 +5,14 @@ namespace Caiocesar173\Aprobank\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
+use Caiocesar173\Aprobank\Http\Libraries\ApiReturn;
+use Caiocesar173\Aprobank\Classes\Aprobank;
+
 
 class ReceiptPolicy extends Model
 {
+    private static $url = 'politica-recebimento';
+    
     protected $table = '';
     protected $primaryKey = '';
 
@@ -17,9 +22,15 @@ class ReceiptPolicy extends Model
 
     public static function create($data)
     {
-    }
+        $payload = [
+            'saque_automatico' => $data['autoWithdraw']
+        ];
 
-    public static function list($id = null)
-    {
+        $response = Aprobank::post(self::$url, $payload);
+
+        if(!isset($response['conta_id']))
+            return ApiReturn::ErrorMessage('Não foi possivel criar o saque');
+
+        return $response;
     }
 }

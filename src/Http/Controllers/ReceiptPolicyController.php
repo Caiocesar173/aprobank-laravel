@@ -20,14 +20,9 @@ class ReceiptPolicyController extends Controller
 
     public function create(Request $request)
     {
-        if(!Validation::validate($request, ['']))
+        if(!Validation::validate($request, ['autoWithdraw']))
             return ApiReturn::ErrorMessage("Dados invalidos");
 
         return ReceiptPolicy::create($request);
-    }
-
-    public function list($id = null)
-    {
-        return ReceiptPolicy::list($id);
     }
 }

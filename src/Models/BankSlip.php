@@ -76,17 +76,18 @@ class BankSlip extends Model
         $response = Aprobank::post(self::$url, $payload);
 
         if(!isset($response['transaction_id']))
-            return ApiReturn::ErrorMessage('Não foi possivel criar o Boleto');
+            return ApiReturn::ErrorMessage('Não foi possivel criar o boleto');
 
         return $response;
     }  
 
     public static function list($id = null)
     {
+        $url = self::$url;
         if($id != null)
-            self::$url = self::$url.'/'.$id;
+            $url = self::$url.'/'.$id;
 
-        $response = Aprobank::get(self::$url);
+        $response = Aprobank::get($url);
 
         if(isset($response['data']) || isset($response['id']))
             return $response;
@@ -99,7 +100,7 @@ class BankSlip extends Model
         $response = Aprobank::delete( self::$url.'/'.$id );
 
         if(!isset($response['success']))
-            return ApiReturn::ErrorMessage('Não foi possivel listar');
+            return ApiReturn::ErrorMessage('Não foi possivel excluir o boleto');
         
         return $response;
     } 

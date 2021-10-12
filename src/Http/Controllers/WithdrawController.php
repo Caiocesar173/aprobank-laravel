@@ -19,8 +19,8 @@ class WithdrawController extends Controller
     }
 
     public function create(Request $request)
-    {
-        if(!Validation::validate($request, ['']))
+    {        
+        if(!Validation::validate($request, ['bankAccountId', 'value', 'description']))
             return ApiReturn::ErrorMessage("Dados invalidos");
 
         return Withdraw::create($request);

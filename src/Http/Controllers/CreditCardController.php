@@ -54,5 +54,4 @@ class CreditCardController extends Controller
 
         return CreditCard::chargeback($request);
     }
-
 }

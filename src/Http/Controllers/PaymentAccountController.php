@@ -20,7 +20,7 @@ class PaymentAccountController extends Controller
 
     public function create(Request $request)
     {
-        if(!Validation::validate($request, ['']))
+        if(!Validation::validate($request, ['document', 'name', 'coporateName', 'cnpj', 'celphone', 'birthday', 'email', 'site', 'zip', 'street', 'number', 'complement', 'district', 'city', 'state']))
             return ApiReturn::ErrorMessage("Dados invalidos");
 
         return PaymentAccount::create($request);
@@ -33,7 +33,7 @@ class PaymentAccountController extends Controller
 
     public function edit($id, Request $request)
     {
-        if(!Validation::validate($request, ['']) 
+        if(!Validation::validate($request, ['name', 'coporateName', 'celphone', 'email', 'site', 'zip', 'street', 'number', 'complement', 'district', 'city', 'state']) 
         && $id != null )
             return ApiReturn::ErrorMessage("Dados invalidos");
 

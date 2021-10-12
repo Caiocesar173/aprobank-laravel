@@ -20,7 +20,7 @@ class PaymentSplitController extends Controller
 
     public function create(Request $request)
     {
-        if(!Validation::validate($request, ['']))
+        if(!Validation::validate($request, ['billingId', 'accountId', 'percentage', 'value', 'responsable', 'liquidValue']))
             return ApiReturn::ErrorMessage("Dados invalidos");
 
         return PaymentSplit::create($request);
@@ -29,16 +29,6 @@ class PaymentSplitController extends Controller
     public function list($id = null)
     {
         return PaymentSplit::list($id);
-    }
-
-    public function edit($id, Request $request)
-    {
-        if(!Validation::validate($request, ['']) 
-        && $id != null )
-            return ApiReturn::ErrorMessage("Dados invalidos");
-
-        $request->request->add(['id' => $id]); 
-        return PaymentSplit::edit($request);
     }
 
     public function delete($id)

@@ -17,44 +17,26 @@ class DocumentController extends Controller
     public function __construct() 
     { 
     }
-
-    public function create(Request $request)
-    {
-        if(!Validation::validate($request, ['']))
-            return ApiReturn::ErrorMessage("Dados invalidos");
-
-        return Document::create($request);
-    }
-
     
     public function extract(Request $request)
     {
-        if(!Validation::validate($request, ['']))
-        return ApiReturn::ErrorMessage("Dados invalidos");
-
         return Document::extract($request);
     }
 
     public function future(Request $request)
     {
-        if(!Validation::validate($request, ['']))
-        return ApiReturn::ErrorMessage("Dados invalidos");
-
         return Document::future($request);
     }
 
     public function history(Request $request)
     {
-        if(!Validation::validate($request, ['']))
-        return ApiReturn::ErrorMessage("Dados invalidos");
-
         return Document::history($request);
     }
 
-    public function transaction(Request $request)
+    public function transaction(Request $request, $id)
     {
-        if(!Validation::validate($request, ['']))
-        return ApiReturn::ErrorMessage("Dados invalidos");
+        if(!empty($id) && $id != null)
+            return ApiReturn::ErrorMessage("Dados invalidos");
 
         return Document::transaction($request);    
     }

@@ -5,58 +5,40 @@ namespace Caiocesar173\Aprobank\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 
-use Aprobank\Libraries\Utils;
-use Aprobank\Libraries\Validation; 
-use Aprobank\Libraries\ApiReturn;
+use Caiocesar173\Aprobank\Http\Libraries\Utils;
+use Caiocesar173\Aprobank\Http\Libraries\Validation; 
+use Caiocesar173\Aprobank\Http\Libraries\ApiReturn;
 
-use Caiocesar173\Aprobank\Models\Document;
+use Caiocesar173\Aprobank\Models\Finance;
 
 
-class DocumentController extends Controller
+class FinanceController extends Controller
 {
     public function __construct() 
     { 
     }
-
-    public function create(Request $request)
-    {
-        if(!Validation::validate($request, ['']))
-            return ApiReturn::ErrorMessage("Dados invalidos");
-
-        return Document::create($request);
-    }
-
     
     public function extract(Request $request)
     {
-        if(!Validation::validate($request, ['']))
-        return ApiReturn::ErrorMessage("Dados invalidos");
-
-        return Document::extract($request);
+        return Finance::extract($request);
     }
 
     public function future(Request $request)
     {
-        if(!Validation::validate($request, ['']))
-        return ApiReturn::ErrorMessage("Dados invalidos");
-
-        return Document::future($request);
+        return Finance::future($request);
     }
 
     public function history(Request $request)
     {
-        if(!Validation::validate($request, ['']))
-        return ApiReturn::ErrorMessage("Dados invalidos");
-
-        return Document::history($request);
+        return Finance::history($request);
     }
 
-    public function transaction(Request $request)
+    public function transaction(Request $request, $id)
     {
-        if(!Validation::validate($request, ['']))
-        return ApiReturn::ErrorMessage("Dados invalidos");
+        if(!empty($id) && $id != null)
+            return ApiReturn::ErrorMessage("Dados invalidos");
 
-        return Document::transaction($request);    
+        return Finance::transaction($request);    
     }
 
 }

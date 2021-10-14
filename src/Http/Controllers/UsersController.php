@@ -5,9 +5,9 @@ namespace Caiocesar173\Aprobank\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 
-use Aprobank\Libraries\Utils;
-use Aprobank\Libraries\Validation; 
-use Aprobank\Libraries\ApiReturn;
+use Caiocesar173\Aprobank\Http\Libraries\Utils;
+use Caiocesar173\Aprobank\Http\Libraries\Validation; 
+use Caiocesar173\Aprobank\Http\Libraries\ApiReturn;
 
 use Caiocesar173\Aprobank\Models\Users;
 
@@ -20,7 +20,7 @@ class UsersController extends Controller
 
     public function create(Request $request)
     {
-        if(!Validation::validate($request, ['']))
+        if(!Validation::validate($request, ['accountId', 'email']))
             return ApiReturn::ErrorMessage("Dados invalidos");
 
         return Users::create($request);
@@ -33,21 +33,17 @@ class UsersController extends Controller
 
     public function createPassword($id, Request $request)
     {
-        if(!Validation::validate($request, ['']) 
-        && $id != null )
+        if(!Validation::validate($request, ['email', 'token', 'password', 'passwordConfirmation']))
             return ApiReturn::ErrorMessage("Dados invalidos");
 
-        $request->request->add(['id' => $id]); 
         return Users::changePassword($request);
     }
 
     public function changePassword($id, Request $request)
     {
-        if(!Validation::validate($request, ['']) 
-        && $id != null )
+        if(!Validation::validate($request, ['password', 'passwordConfirmation']))
             return ApiReturn::ErrorMessage("Dados invalidos");
 
-        $request->request->add(['id' => $id]); 
         return Users::changePassword($request);
     }
 

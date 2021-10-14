@@ -5,9 +5,9 @@ namespace Caiocesar173\Aprobank\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 
-use Aprobank\Libraries\Utils;
-use Aprobank\Libraries\Validation; 
-use Aprobank\Libraries\ApiReturn;
+use Caiocesar173\Aprobank\Http\Libraries\Utils;
+use Caiocesar173\Aprobank\Http\Libraries\Validation; 
+use Caiocesar173\Aprobank\Http\Libraries\ApiReturn;
 
 use Caiocesar173\Aprobank\Models\PaymentBooklet;
 
@@ -20,7 +20,7 @@ class PaymentBookletController extends Controller
 
     public function create(Request $request)
     {
-        if(!Validation::validate($request, ['']))
+        if(!Validation::validate($request, ['payerId', 'value', 'description', 'instruction1', 'instruction2', 'instruction3', 'dueDate', 'penaltyType', 'penltyValue', 'feeType', 'feeValue', 'discountType', 'discountValue', 'dueDateDiscount']))
             return ApiReturn::ErrorMessage("Dados invalidos");
 
         return PaymentBooklet::create($request);
@@ -29,16 +29,6 @@ class PaymentBookletController extends Controller
     public function list($id = null)
     {
         return PaymentBooklet::list($id);
-    }
-
-    public function edit($id, Request $request)
-    {
-        if(!Validation::validate($request, ['']) 
-        && $id != null )
-            return ApiReturn::ErrorMessage("Dados invalidos");
-
-        $request->request->add(['id' => $id]); 
-        return PaymentBooklet::edit($request);
     }
 
     public function delete($id)

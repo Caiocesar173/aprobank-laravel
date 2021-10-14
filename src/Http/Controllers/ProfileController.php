@@ -9,20 +9,25 @@ use Caiocesar173\Aprobank\Http\Libraries\Utils;
 use Caiocesar173\Aprobank\Http\Libraries\Validation; 
 use Caiocesar173\Aprobank\Http\Libraries\ApiReturn;
 
-use Caiocesar173\Aprobank\Models\ReceiptPolicy;
+use Caiocesar173\Aprobank\Models\Profile;
 
 
-class ReceiptPolicyController extends Controller
+class ProfileController extends Controller
 {
     public function __construct() 
     { 
     }
 
-    public function create(Request $request)
+    public function list($id = null)
     {
-        if(!Validation::validate($request, ['autoWithdraw']))
+        return Profile::list($id);
+    }
+
+    public function edit(Request $request)
+    {
+        if(!Validation::validate($request, ['name', 'celphone', 'corporateName', 'email']) )
             return ApiReturn::ErrorMessage("Dados invalidos");
 
-        return ReceiptPolicy::create($request);
+        return Profile::edit($request);
     }
 }

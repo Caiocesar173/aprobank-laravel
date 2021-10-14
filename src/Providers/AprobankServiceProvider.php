@@ -10,5 +10,6 @@ class AprobankServiceProvider extends ServiceProvider
     {
         self::loadRoutesFrom(__DIR__.'/../../routes/aprobank.php');
         self::loadViewsFrom(__DIR__.'/../../resources/views', 'aprobank');
+        $this->loadMigrationsFrom(__DIR__ .'/../../database/migrations');
     }
 }

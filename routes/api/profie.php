@@ -1,8 +1,8 @@
 <?php
-use Caiocesar173\Aprobank\Http\Controllers\ProfieController;
+use Caiocesar173\Aprobank\Http\Controllers\ProfileController;
 
 
 Route::middleware('api')->prefix('profile')->group(function () {
-    Route::get('/', [ProfieController::class, 'list']);
-    Route::put('/', [ProfieController::class, 'edit']);
+    Route::get('/', [ProfileController::class, 'list']);
+    Route::put('/', [ProfileController::class, 'edit']);
 });

@@ -5,14 +5,14 @@ namespace Caiocesar173\Aprobank\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 
-use Aprobank\Libraries\Utils;
-use Aprobank\Libraries\Validation; 
-use Aprobank\Libraries\ApiReturn;
+use Caiocesar173\Aprobank\Http\Libraries\Utils;
+use Caiocesar173\Aprobank\Http\Libraries\Validation; 
+use Caiocesar173\Aprobank\Http\Libraries\ApiReturn;
 
-use Caiocesar173\Aprobank\Models\Document;
+use Caiocesar173\Aprobank\Models\Payer;
 
 
-class DocumentController extends Controller
+class PayerController extends Controller
 {
     public function __construct() 
     { 
@@ -20,25 +20,30 @@ class DocumentController extends Controller
 
     public function create(Request $request)
     {
-        if(!Validation::validate($request, ['']))
+        
+
+        if(!Validation::validate($request, ['name', 'document', 'celphone', 'birthday', 'email', 'address']))
+            return ApiReturn::ErrorMessage("Dados invalidos");
+        
+        if(!Validation::validateArray($request['address'], ['zip', 'street', 'number', 'complement', 'district', 'city', 'state']))
             return ApiReturn::ErrorMessage("Dados invalidos");
 
-        return Document::create($request);
+        return Payer::create($request);
     }
 
     public function list($id = null)
     {
-        return Document::list($id);
+        return Payer::list($id);
     }
 
     public function edit($id, Request $request)
     {
-        if(!Validation::validate($request, ['']) 
+        if(!Validation::validate($request, ['name', 'celphone', 'email', 'zip', 'street', 'number', 'complement', 'district', 'city', 'state']) 
         && $id != null )
             return ApiReturn::ErrorMessage("Dados invalidos");
 
         $request->request->add(['id' => $id]); 
-        return Document::edit($request);
+        return Payer::edit($request);
     }
 
     public function delete($id)
@@ -46,14 +51,14 @@ class DocumentController extends Controller
         if(!empty($id) && $id != null)
             return ApiReturn::ErrorMessage("Dados invalidos");
 
-        return Document::deleteDocument($id);
+        return Payer::deletePayer($id);
     }
 
     public function associate(Request $request) 
     {
-        if(!Validation::validate($request, ['']))
+        if(!Validation::validate($request, ['payerId', 'name', 'number', 'cvv', 'month', 'year']))
             return ApiReturn::ErrorMessage("Dados invalidos");
 
-        return Document::associate($request);
+        return Payer::associate($request);
     }
 }

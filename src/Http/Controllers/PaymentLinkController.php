@@ -5,9 +5,9 @@ namespace Caiocesar173\Aprobank\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 
-use Aprobank\Libraries\Utils;
-use Aprobank\Libraries\Validation; 
-use Aprobank\Libraries\ApiReturn;
+use Caiocesar173\Aprobank\Http\Libraries\Utils;
+use Caiocesar173\Aprobank\Http\Libraries\Validation; 
+use Caiocesar173\Aprobank\Http\Libraries\ApiReturn;
 
 use Caiocesar173\Aprobank\Models\PaymentLink;
 
@@ -20,7 +20,7 @@ class PaymentLinkController extends Controller
 
     public function create(Request $request)
     {
-        if(!Validation::validate($request, ['']))
+        if(!Validation::validate($request, ['value', 'pacelLimit', 'password', 'dueDate']))
             return ApiReturn::ErrorMessage("Dados invalidos");
 
         return PaymentLink::create($request);
@@ -29,16 +29,6 @@ class PaymentLinkController extends Controller
     public function list($id = null)
     {
         return PaymentLink::list($id);
-    }
-
-    public function edit($id, Request $request)
-    {
-        if(!Validation::validate($request, ['']) 
-        && $id != null )
-            return ApiReturn::ErrorMessage("Dados invalidos");
-
-        $request->request->add(['id' => $id]); 
-        return PaymentLink::edit($request);
     }
 
     public function delete($id)
@@ -51,7 +41,7 @@ class PaymentLinkController extends Controller
 
     public function checkPassword(Request $reques)
     {
-         if(!Validation::validate($request, ['']))
+        if(!Validation::validate($request, ['paymentLinkId', 'password']))
             return ApiReturn::ErrorMessage("Dados invalidos");
 
         return PaymentLink::checkPassword($request);
@@ -59,9 +49,9 @@ class PaymentLinkController extends Controller
 
     public function pay(Request $reques)
     {
-         if(!Validation::validate($request, ['']))
+        if(!Validation::validate($request, ['payerId', 'parcel', 'name', 'number', 'cvv', 'month', 'year']))
             return ApiReturn::ErrorMessage("Dados invalidos");
-
-            return PaymentLink::pay($request);
+    
+        return PaymentLink::pay($request);
     }
 }

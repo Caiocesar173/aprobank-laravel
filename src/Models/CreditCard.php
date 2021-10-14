@@ -46,7 +46,7 @@ class CreditCard extends Model
     public static function createSimple($data)
     {
         $payload = [
-            "documento" => $date['document'],
+            "documento" => Utils::clean($date['document']),
             "celular" => $date['cellphone'],
             "parcelas" => $date['parcel'],
             "valor" => $date['value'],

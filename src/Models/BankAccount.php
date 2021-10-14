@@ -12,10 +12,15 @@ class BankAccount extends Model
 {
     private static $url = 'conta-bancaria';
 
-    protected $table = '';
-    protected $primaryKey = '';
+    protected $table = 'account';
+    protected $primaryKey = 'id';
 
     protected $fillable = [
+        'accountId',
+        'bankCode',
+        'agency',
+        'type',
+        'account',
     ];
 
 
@@ -33,7 +38,7 @@ class BankAccount extends Model
         if(!isset($response['conta_id']))
             return ApiReturn::ErrorMessage('Não foi possivel criar a conta bancaria');
 
-        return $response;
+        return $response->json();
     }
 
     public static function list($id = null)
@@ -43,9 +48,9 @@ class BankAccount extends Model
             $url = (self::$url.'/'.$id);
 
         $response = Aprobank::get($url);
-        
-        if(isset($response['data']) || isset($response['id']))
-            return $response;
+
+        if(is_array($response->json()))
+            return $response->json();
         
         return ApiReturn::ErrorMessage('Não foi possivel listar');
     }
@@ -55,8 +60,8 @@ class BankAccount extends Model
         $response = Aprobank::delete( self::$url.'/'.$id );
 
         if(!isset($response['success']))
-            return ApiReturn::ErrorMessage('Não foi possivel excluia a conta bancaria');
+            return ApiReturn::ErrorMessage('Não foi possivel excluir a conta bancaria');
         
-        return $response;
-    } 
+        return $response->json();
+    }
 }

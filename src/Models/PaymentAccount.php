@@ -23,7 +23,7 @@ class PaymentAccount extends Model
     public static function create($data)
     {
         $payload = [
-            "documento" => $data['document'],
+            "documento" => Utils::clean($data['document']),
             "nome" => $data['name'],
             "razao_social" => $data['coporateName'],
             "cnpj" => $data['cnpj'],

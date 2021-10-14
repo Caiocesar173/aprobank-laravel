@@ -6,16 +6,37 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
 use Caiocesar173\Aprobank\Http\Libraries\ApiReturn;
+use Caiocesar173\Aprobank\Http\Libraries\Utils;
+
 use Caiocesar173\Aprobank\Classes\Aprobank;
 
 class BankSlip extends Model
 {
     private static $url = 'boleto';
+    private static $type = 'bank_slip';
 
-    protected $table = '';
-    protected $primaryKey = '';
+    protected $table = 'bankslip';
+    protected $primaryKey = 'id';
 
     protected $fillable = [
+        'payerId',
+        'transactionId',
+        'digitableLine',
+        'url',
+        'documentNumber',
+        'value',
+        'description',
+        'instruction1',
+        'instruction2',
+        'instruction3',
+        'dueDate',
+        'penaltyType',
+        'penltyValue',
+        'feeType',
+        'feeValue',
+        'discountType',
+        'discountValue',
+        'dueDateDiscount',
     ];
 
 
@@ -39,18 +60,19 @@ class BankSlip extends Model
         ];
 
         $response = Aprobank::post(self::$url, $payload);
+        return $response->json();
 
         if(!isset($response['transaction_id']))
             return ApiReturn::ErrorMessage('Não foi possivel criar o Boleto');
 
-        return $response;
+        return Utils::formatResponse($response, self::$type);
     }
     
     public static function createPayer($data)
     {
         $payload = [
             "pagador" => [
-                "documento" => $data['document'],
+                "documento" => Utils::clean($data['document']),
                 "nome" => $data['name'],
                 "celular" => $data['celphone'],
                 "data_nascimento" => $data['birthday'],
@@ -78,7 +100,7 @@ class BankSlip extends Model
         if(!isset($response['transaction_id']))
             return ApiReturn::ErrorMessage('Não foi possivel criar o boleto');
 
-        return $response;
+        return Utils::formatResponse($response, self::$type);
     }  
 
     public static function list($id = null)

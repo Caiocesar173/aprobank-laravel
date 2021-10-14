@@ -5,14 +5,14 @@ namespace Caiocesar173\Aprobank\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 
-use Aprobank\Libraries\Utils;
-use Aprobank\Libraries\Validation; 
-use Aprobank\Libraries\ApiReturn;
+use Caiocesar173\Aprobank\Http\Libraries\Utils;
+use Caiocesar173\Aprobank\Http\Libraries\Validation; 
+use Caiocesar173\Aprobank\Http\Libraries\ApiReturn;
 
-use Caiocesar173\Aprobank\Models\Document;
+use Caiocesar173\Aprobank\Models\Finance;
 
 
-class DocumentController extends Controller
+class FinanceController extends Controller
 {
     public function __construct() 
     { 
@@ -20,17 +20,17 @@ class DocumentController extends Controller
     
     public function extract(Request $request)
     {
-        return Document::extract($request);
+        return Finance::extract($request);
     }
 
     public function future(Request $request)
     {
-        return Document::future($request);
+        return Finance::future($request);
     }
 
     public function history(Request $request)
     {
-        return Document::history($request);
+        return Finance::history($request);
     }
 
     public function transaction(Request $request, $id)
@@ -38,7 +38,7 @@ class DocumentController extends Controller
         if(!empty($id) && $id != null)
             return ApiReturn::ErrorMessage("Dados invalidos");
 
-        return Document::transaction($request);    
+        return Finance::transaction($request);    
     }
 
 }

@@ -2,7 +2,7 @@
 use Caiocesar173\Aprobank\Http\Controllers\UsersController;
 
 
-Route::middleware('api')->prefix('users')->group(function () {
+Route::middleware('api')->prefix('user')->group(function () {
     Route::post('/', [UsersController::class, 'create']);
     Route::get('/', [UsersController::class, 'list']);
     Route::get('/{id}', [UsersController::class, 'list']);

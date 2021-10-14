@@ -24,26 +24,26 @@ class Payer extends Model
     {
         $payload = [
             "nome" => $data['name'],
-            "documento" => $data['document'],
+            "documento" => Utils::clean($data['document']),
             "celular" => $data['celphone'],
             "data_nascimento" => $data['birthday'],
             "email" => $data['email'],
             "endereco" => [
-                "cep" => $data['zip'],
-                "rua" => $data['street'],
-                "numero" => $data['number'],
-                "complemento" => $data['complement'],
-                "bairro" => $data['district'],
-                "cidade" => $data['city'],
-                "estado" => $data['state']
+                "cep" => $data['address']['zip'],
+                "rua" => $data['address']['street'],
+                "numero" => $data['address']['number'],
+                "complemento" => $data['address']['complement'],
+                "bairro" => $data['address']['district'],
+                "cidade" => $data['address']['city'],
+                "estado" => $data['address']['state']
             ]
         ];
 
         $response = Aprobank::post(self::$url, $payload);
 
-        if(!isset($response['conta_id']))
+        if(!isset($response['id']))
             return ApiReturn::ErrorMessage('Não foi possivel criar o pagador');
-
+        
         return $response;
     }
 
@@ -115,4 +115,6 @@ class Payer extends Model
 
         return $response;
     }
+
+   
 }

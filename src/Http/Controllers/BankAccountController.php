@@ -5,9 +5,9 @@ namespace Caiocesar173\Aprobank\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 
-use Aprobank\Libraries\Utils;
-use Aprobank\Libraries\Validation; 
-use Aprobank\Libraries\ApiReturn;
+use Caiocesar173\Aprobank\Http\Libraries\Utils;
+use Caiocesar173\Aprobank\Http\Libraries\Validation; 
+use Caiocesar173\Aprobank\Http\Libraries\ApiReturn;
 
 use Caiocesar173\Aprobank\Models\BankAccount;
 
@@ -34,8 +34,8 @@ class BankAccountController extends Controller
     public function delete($id)
     {
         if(!empty($id) && $id != null)
-            return ApiReturn::ErrorMessage("Dados invalidos");
-
-        return BankAccount::deleteBankAccount($id);
+            return BankAccount::deleteBankAccount($id);
+        
+        return ApiReturn::ErrorMessage("Dados invalidos");
     }
 }

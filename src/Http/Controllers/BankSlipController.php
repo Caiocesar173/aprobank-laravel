@@ -5,9 +5,9 @@ namespace Caiocesar173\Aprobank\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 
-use Aprobank\Libraries\Utils;
-use Aprobank\Libraries\Validation; 
-use Aprobank\Libraries\ApiReturn;
+use Caiocesar173\Aprobank\Http\Libraries\Utils;
+use Caiocesar173\Aprobank\Http\Libraries\Validation; 
+use Caiocesar173\Aprobank\Http\Libraries\ApiReturn;
 
 use Caiocesar173\Aprobank\Models\BankSlip;
 
@@ -20,7 +20,7 @@ class BankSlipController extends Controller
 
     public function create(Request $request)
     {
-        if(!isset($request['payerId']))
+        if(isset($request['payerId']))
         {
             if(!Validation::validate($request, ['payerId', 'value', 'description', 'instruction1', 'instruction2', 'instruction3', 'dueDate', 'penaltyType', 'penltyValue', 'feeType', 'feeValue', 'discountType', 'discountValue', 'dueDateDiscount']))
                 return ApiReturn::ErrorMessage("Dados invalidos");
@@ -33,10 +33,10 @@ class BankSlipController extends Controller
 
     public function createPayer($request)
     {
-          if(!Validation::validate($request, ['document', 'name', 'celphone', 'birthday', 'email', 'zip', 'street', 'number', 'complement', 'district', 'city', 'state', 'value', 'description', 'instruction1', 'instruction2', 'instruction3', 'dueDate']))
-                return ApiReturn::ErrorMessage("Dados invalidos");
-
-            return BankSlip::createPayer($request);
+        if(!Validation::validate($request, ['document', 'name', 'celphone', 'birthday', 'email', 'zip', 'street', 'district', 'city', 'state', 'value', 'description', 'instruction1', 'instruction2', 'instruction3', 'dueDate']))
+            return ApiReturn::ErrorMessage("Dados invalidos");
+        
+        return BankSlip::createPayer($request);
     }
 
     public function list($id = null)

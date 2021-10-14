@@ -2,6 +2,9 @@
 
 namespace Caiocesar173\Aprobank\Classes;
 
+use Caiocesar173\Aprobank\Models\BackLog;
+
+
 use Illuminate\Support\Facades\Http;
 
 class Aprobank
@@ -19,22 +22,62 @@ class Aprobank
     }
 
     public static function get($route, $payload = null)
-    {
-        return Http::withHeaders(self::getHeaders())->get(self::$BaseUrl.'/'.self::$ApiVersion.'/'.$route, $payload);
+    {   
+        $url = self::$BaseUrl.'/'.self::$ApiVersion.'/'.$route;
+        $headers = self::getHeaders();
+
+        $response = Http::withHeaders($headers)->get($url, $payload);
+        self::saveBackLog($url, $headers, $payload, $response, 'get');
+
+        return $response;
     }
 
     public static function post($route, $payload = null)
     {
-        return Http::withHeaders(self::getHeaders())->post(self::$BaseUrl.'/'.self::$ApiVersion.'/'.$route, $payload);
+        $url = self::$BaseUrl.'/'.self::$ApiVersion.'/'.$route;
+        $headers = self::getHeaders();
+
+        $response = Http::withHeaders($headers)->post($url, $payload);
+        self::saveBackLog($url, $headers, $payload, $response, 'post');
+
+        return $response;
     }
 
     public static function put($route, $payload = null)
     {
-        return Http::withHeaders(self::getHeaders())->put(self::$BaseUrl.'/'.self::$ApiVersion.'/'.$route, $payload);
+        $url = self::$BaseUrl.'/'.self::$ApiVersion.'/'.$route;
+        $headers = self::getHeaders();
+
+        $response = Http::withHeaders($headers)->put($url, $payload);
+        self::saveBackLog($url, $headers, $payload, $response, 'put');
+
+        return $response;
     }
 
     public static function delete($route, $payload = null)
     {
-        return Http::withHeaders(self::getHeaders())->delete(self::$BaseUrl.'/'.self::$ApiVersion.'/'.$route);
+        $url = self::$BaseUrl.'/'.self::$ApiVersion.'/'.$route;
+        $headers = self::getHeaders();
+
+        $response = Http::withHeaders($headers)->delete($url, $payload);
+        self::saveBackLog($url, $headers, $payload, $response, 'delete');
+
+        return $response;
+    }
+
+    protected static function saveBackLog($url, $headers, $payload, $response, $type)
+    {
+        $data = [
+            'url' => $url,
+            'status' => $response->successful() ? 'successful' : 'failed',
+            'code' => $response->getStatusCode(),
+            'type' => $type,
+            'token' => 'Bearer '.env('APROBANK_TOKEN'),
+            'payload' => $payload,
+            'headers' => $headers,
+            'response' => $response->json(),
+        ];
+
+        BackLog::create($data);
     }
 }

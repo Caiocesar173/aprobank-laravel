@@ -16,7 +16,7 @@ class Backlog extends Migration
     public function up()
     {
         Schema::create('backlog', function (Blueprint $table) {
-            $table->uuidMorphs('id')->primary();
+            $table->uuid('id')->primary();
             $table->text('status');
             $table->smallInteger('code')->nullable();
             $table->text('url');

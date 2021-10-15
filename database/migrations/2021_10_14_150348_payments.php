@@ -20,8 +20,8 @@ class Payments extends Migration
     public function up()
     {
         Schema::create('payments', function (Blueprint $table) {
-            $table->uuidMorphs('id')->primary();
-            $table->uuidMorphs('uuid_external')->unique();
+            $table->uuid('id')->primary();
+            $table->uuidMorphs('uuid_external');
             
             $table->text('order_id');
             $table->text('situation');
@@ -29,7 +29,10 @@ class Payments extends Migration
             $table->text('parcel_num');
             $table->text('type');
             $table->decimal('value', 11, 2);
-            $table->foreignId('reciver')->references('id')->on('bank_user')->onDelete('cascade');
+            
+            $table->uuid('reciver_id');
+            $table->foreign('reciver_id')->references('id')->on('bank_user')->onDelete('cascade');
+
             $table->text('payement_link');
             $table->decimal('fee', 11, 2);
             $table->text('type_payment');

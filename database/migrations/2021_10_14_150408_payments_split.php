@@ -19,10 +19,12 @@ class PaymentsSplit extends Migration
     public function up()
     {
         Schema::create('payments_split', function (Blueprint $table) {
-            $table->uuidMorphs('id')->primary();
-            $table->uuidMorphs('uuid_external')->unique();
+            $table->uuid('id')->primary();
+            $table->uuidMorphs('uuid_external');
             
-            $table->foreignId('bank_user_id')->references('id')->on('bank_user')->onDelete('cascade');
+            $table->uuid('bank_user_id');
+            $table->foreign('bank_user_id')->references('id')->on('bank_user')->onDelete('cascade');
+
             $table->text('account_id');
             $table->decimal('value', 11, 2);
             $table->text('type_user');

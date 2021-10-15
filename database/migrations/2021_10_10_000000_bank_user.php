@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateUsersTable extends Migration
+class BankUser extends Migration
 {
     /**
      * Run the migrations.
@@ -14,8 +14,8 @@ class CreateUsersTable extends Migration
     public function up()
     {
         Schema::create('bank_user', function (Blueprint $table) {
-            $table->uuidMorphs('id')->primary();
-            $table->uuidMorphs('uuid_external')->unique();
+            $table->uuid('id')->primary();
+            $table->uuid('uuid_external')->unique();
             
             $table->foreignId('user_id')->references('id')->on('users')->onDelete('cascade');
 

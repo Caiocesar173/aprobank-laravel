@@ -14,13 +14,17 @@ class PaymentAccount extends Migration
     public function up()
     {
         Schema::create('payment_account', function (Blueprint $table) {
-            $table->uuidMorphs('id')->primary();
-            $table->uuidMorphs('uuid_external')->unique();
+            $table->uuid('id')->primary();
+            $table->uuidMorphs('uuid_external');
 
             $table->text('name');
             $table->text('status');
             $table->text('type_user');
-            $table->foreignId('bank_user_id')->references('id')->on('bank_user')->onDelete('cascade');
+            /*
+             * Crira o campo responsavel (Morph) -> salvando a classe do pagamento
+             */
+            $table->uuid('bank_user_id');
+            $table->foreign('bank_user_id')->references('id')->on('bank_user')->onDelete('cascade');
             
             $table->timestamps();
         });

@@ -4,11 +4,13 @@ namespace Caiocesar173\Aprobank\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
-use Ramsey\Uuid\Uuid;
+use Caiocesar173\Aprobank\Classes\UuidKey;
 
 
 class BackLog extends Model
 {
+    use UuidKey;
+
     protected $table = 'backlog';
     protected $primaryKey = 'id';
 
@@ -22,15 +24,6 @@ class BackLog extends Model
         'status',
         'code',
     ];
-
-    public static function boot()
-    {
-        parent::boot();
-        self::creating(function ($model) {
-            $uuid = Uuid::uuid4();
-            $model->id = $uuid->toString();
-        });
-    }
 
     public static function create($data)
     {

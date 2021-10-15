@@ -20,8 +20,6 @@ class PayerController extends Controller
 
     public function create(Request $request)
     {
-        
-
         if(!Validation::validate($request, ['name', 'document', 'celphone', 'birthday', 'email', 'address']))
             return ApiReturn::ErrorMessage("Dados invalidos");
         

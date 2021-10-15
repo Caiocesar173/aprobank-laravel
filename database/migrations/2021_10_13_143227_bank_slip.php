@@ -16,8 +16,10 @@ class BankSlip extends Migration
     public function up()
     {
         Schema::create('bankslip', function (Blueprint $table) {
-            $table->uuidMorphs('id');
-            $table->foreignId('payerId');
+            $table->uuidMorphs('id')->primary();
+            $table->uuidMorphs('uuid_external')->unique();
+            
+            $table->foreignId('payer_id');
             $table->string('transactionId');
             $table->string('status')->nullable();
             $table->longText('digitableLine');
@@ -36,8 +38,8 @@ class BankSlip extends Migration
             $table->tinyInteger('discountType')->nullable();
             $table->decimal('discountValue', 11, 2)->nullable();
             $table->dateTime('dueDateDiscount')->nullable();
-            $table->timestamp('created_at')->useCurrent();
-            $table->timestamp('updated_at')->default(DB::raw('NULL ON UPDATE CURRENT_TIMESTAMP'))->nullable();
+            
+            $table->timestamps();
         });
     }
     

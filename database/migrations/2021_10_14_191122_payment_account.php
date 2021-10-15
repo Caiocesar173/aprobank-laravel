@@ -3,10 +3,8 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Support\Facades\DB;
 
-
-class PaymentsSplitRules extends Migration
+class PaymentAccount extends Migration
 {
     /**
      * Run the migrations.
@@ -15,16 +13,15 @@ class PaymentsSplitRules extends Migration
      */
     public function up()
     {
-        Schema::create('payments_split_rules', function (Blueprint $table) {
+        Schema::create('payment_account', function (Blueprint $table) {
             $table->uuidMorphs('id')->primary();
             $table->uuidMorphs('uuid_external')->unique();
-            
-            $table->text('name');
-            $table->text('type_user');
-            $table->text('type_value');
-            $table->decimal('value', 11, 2);
-            $table->foreignId('bank_user_id')->references('id')->on('bank_user')->onDelete('cascade');
 
+            $table->text('name');
+            $table->text('status');
+            $table->text('type_user');
+            $table->foreignId('bank_user_id')->references('id')->on('bank_user')->onDelete('cascade');
+            
             $table->timestamps();
         });
     }
@@ -36,6 +33,6 @@ class PaymentsSplitRules extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('payments_split_rules');
+        Schema::dropIfExists('payment_account');
     }
 }

@@ -16,7 +16,7 @@ class Backlog extends Migration
     public function up()
     {
         Schema::create('backlog', function (Blueprint $table) {
-            $table->uuid('id');
+            $table->uuidMorphs('id')->primary();
             $table->text('status');
             $table->smallInteger('code')->nullable();
             $table->text('url');
@@ -25,9 +25,7 @@ class Backlog extends Migration
             $table->json('payload')->nullable();
             $table->json('headers');
             $table->json('response');
-
-            $table->timestamp('created_at')->useCurrent();
-            $table->timestamp('updated_at')->default(DB::raw('NULL ON UPDATE CURRENT_TIMESTAMP'))->nullable();
+            $table->timestamps();
         });
     }
 

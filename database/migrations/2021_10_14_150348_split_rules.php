@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
 
 
-class PaymentsSplitRules extends Migration
+class SplitRules extends Migration
 {
     /**
      * Run the migrations.

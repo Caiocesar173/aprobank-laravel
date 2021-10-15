@@ -17,7 +17,8 @@ class BankUser extends Migration
             $table->uuid('id')->primary();
             $table->uuid('uuid_external')->unique();
             
-            $table->foreignId('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->unsignedInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
 
             $table->timestamps();
         });

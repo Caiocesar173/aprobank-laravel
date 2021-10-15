@@ -17,7 +17,7 @@ class BankSlip extends Migration
     {
         Schema::create('bankslip', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->uuidMorphs('uuid_external');
+            $table->uuid('uuid_external');
 
             $table->foreignId('payer_id');
             $table->string('transactionId');

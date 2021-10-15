@@ -15,17 +15,16 @@ class PaymentsSplitRules extends Migration
      */
     public function up()
     {
-        Schema::create('payments_split_rules', function (Blueprint $table) {
+        Schema::create('split_rules', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->uuidMorphs('uuid_external');
             
             $table->text('name');
             $table->text('type_user');
             $table->text('type_value');
             $table->decimal('value', 11, 2);
 
-            $table->uuid('bank_user_id');
-            $table->foreign('bank_user_id')->references('id')->on('bank_user')->onDelete('cascade');
+            $table->uuid('split_id');
+            $table->foreign('split_id')->references('id')->on('split')->onDelete('cascade');
 
             $table->timestamps();
         });

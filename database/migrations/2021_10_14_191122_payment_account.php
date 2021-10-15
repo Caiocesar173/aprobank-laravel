@@ -15,7 +15,7 @@ class PaymentAccount extends Migration
     {
         Schema::create('payment_account', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->uuidMorphs('uuid_external');
+            $table->uuid('uuid_external');
 
             $table->text('name');
             $table->text('status');

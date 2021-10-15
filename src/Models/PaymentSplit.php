@@ -13,10 +13,17 @@ class PaymentSplit extends Model
 {
     private static $url = 'split';
 
-    protected $table = '';
-    protected $primaryKey = '';
+    protected $table = 'payment_split';
+    protected $primaryKey = 'id';
 
     protected $fillable = [
+        'uuid_external',
+        'bank_user_id',
+        'account_id',
+        'value',
+        'type_user',
+        'type_value',
+        'type_partition',
     ];
 
 

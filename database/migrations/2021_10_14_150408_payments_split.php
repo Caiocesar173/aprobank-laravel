@@ -20,7 +20,7 @@ class PaymentsSplit extends Migration
     {
         Schema::create('payments_split', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->uuidMorphs('uuid_external');
+            $table->uuid('uuid_external');
             
             $table->uuid('bank_user_id');
             $table->foreign('bank_user_id')->references('id')->on('bank_user')->onDelete('cascade');
@@ -30,6 +30,9 @@ class PaymentsSplit extends Migration
             $table->text('type_user');
             $table->text('type_value');
             $table->text('type_partition');
+
+            $table->uuid('split_rules_id');
+            $table->foreign('split_rules_id')->references('id')->on('split_rules')->onDelete('cascade');
             
             $table->timestamps();
         });

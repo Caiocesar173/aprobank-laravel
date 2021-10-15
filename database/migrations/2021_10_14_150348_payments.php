@@ -21,7 +21,7 @@ class Payments extends Migration
     {
         Schema::create('payments', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->uuidMorphs('uuid_external');
+            $table->uuid('uuid_external');
             
             $table->text('order_id');
             $table->text('situation');

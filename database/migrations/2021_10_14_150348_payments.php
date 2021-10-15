@@ -20,21 +20,23 @@ class Payments extends Migration
     public function up()
     {
         Schema::create('payments', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('orderId')->references('id')->on('order')->onDelete('cascade');
+            $table->uuidMorphs('id')->primary();
+            $table->uuidMorphs('uuid_external')->unique();
+            
+            $table->text('order_id');
             $table->text('situation');
-            $table->text('parcel');
+            $table->integer('parcel');
             $table->text('parcel_num');
             $table->text('type');
-            $table->text('value');
-            $table->foreignId('reciver')->references('id')->on('user')->onDelete('cascade');
+            $table->decimal('value', 11, 2);
+            $table->foreignId('reciver')->references('id')->on('bank_user')->onDelete('cascade');
             $table->text('payement_link');
             $table->decimal('fee', 11, 2);
             $table->text('type_payment');
             $table->text('gateway');
             $table->json('extra');
-            $table->timestamp('created_at')->useCurrent();
-            $table->timestamp('updated_at')->default(DB::raw('NULL ON UPDATE CURRENT_TIMESTAMP'))->nullable();
+            
+            $table->timestamps();
         });
     }
 

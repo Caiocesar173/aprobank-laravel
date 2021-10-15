@@ -32,11 +32,11 @@ class PaymentSplit extends Model
         ];
 
         $response = Aprobank::post(self::$url, $payload);
+        return $response->json();
 
         if(!isset($response['conta_id']))
             return ApiReturn::ErrorMessage('Não foi possivel criar o saque');
 
-        return $response;
     }
 
     public static function list($id = null)

@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 
 use Caiocesar173\Aprobank\Http\Libraries\ApiReturn;
 use Caiocesar173\Aprobank\Classes\Aprobank;
+use Caiocesar173\Aprobank\Http\Libraries\Utils;
 
 class CreditCard extends Model
 {

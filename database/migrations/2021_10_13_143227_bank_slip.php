@@ -18,9 +18,12 @@ class BankSlip extends Migration
         Schema::create('bankslip', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->uuid('uuid_external');
+            $table->uuid('payer_id');
+            $table->uuid('transactionId');
 
-            $table->foreignId('payer_id');
-            $table->string('transactionId');
+            $table->morphs('responsable');
+            $table->foreign('client_id')->references('id')->on('cliente')->onDelete('cascade');
+
             $table->string('status')->nullable();
             $table->longText('digitableLine');
             $table->longText('url');

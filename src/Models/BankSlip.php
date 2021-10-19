@@ -22,6 +22,8 @@ class BankSlip extends Model
         'payerId',
         'transactionId',
         'digitableLine',
+        'responsable',
+        'client_id',
         'url',
         'documentNumber',
         'value',
@@ -78,13 +80,13 @@ class BankSlip extends Model
                 "data_nascimento" => $data['birthday'],
                 "email" => $data['email'],
                 "endereco" => [
-                    "cep" => $data['zip'],
-                    "rua" => $data['street'],
-                    "numero" => $data['number'],
-                    "complemento" => $data['complement'],
-                    "bairro" => $data['district'],
-                    "cidade" => $data['city'],
-                    "estado" => $data['state']
+                    "cep" =>         self::Mask("#####-###", $data['address']['zip']),
+                    "rua" =>         $data['address']['street'],
+                    "numero" =>      $data['address']['number'],
+                    "complemento" => $data['address']['complement'],
+                    "bairro" =>      $data['address']['district'],
+                    "cidade" =>      $data['address']['city'],
+                    "estado" =>      $data['address']['state']
                 ]
             ],
             "valor" => $data['value'],
@@ -92,9 +94,9 @@ class BankSlip extends Model
             "instrucao1" => $data['instruction1'],
             "instrucao2" => $data['instruction2'],
             "instrucao3" => $data['instruction3'],
-            "data_vencimento" => $data['dueDate']
+            "data_vencimento" => $data['dueDate'],
         ];
-
+        
         $response = Aprobank::post(self::$url, $payload);
 
         if(!isset($response['transaction_id']))
@@ -126,4 +128,16 @@ class BankSlip extends Model
         
         return $response;
     } 
+
+    function Mask($mask,$str){
+
+        $str = str_replace(" ","",$str);
+    
+        for($i=0;$i<strlen($str);$i++){
+            $mask[strpos($mask,"#")] = $str[$i];
+        }
+    
+        return $mask;
+    
+    }
 }

@@ -17,6 +17,17 @@ class Utils{
             return self::formatBankSlip($response);
     }
 
+    public static function Mask($mask,$str){
+
+        $str = str_replace(" ","",$str);
+    
+        for($i=0;$i<strlen($str);$i++){
+            $mask[strpos($mask,"#")] = $str[$i];
+        }
+    
+        return $mask;
+    }
+
 
     private static function formatBankSlip($response)
     {
@@ -51,4 +62,5 @@ class Utils{
 
     }
 
+    
 }

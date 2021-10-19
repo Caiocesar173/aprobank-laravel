@@ -20,9 +20,7 @@ class BankSlip extends Migration
             $table->uuid('uuid_external');
             $table->uuid('payer_id');
             $table->uuid('transactionId');
-
             $table->morphs('responsable');
-            $table->foreign('client_id')->references('id')->on('cliente')->onDelete('cascade');
 
             $table->string('status')->nullable();
             $table->longText('digitableLine');

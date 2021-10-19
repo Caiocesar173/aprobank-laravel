@@ -80,7 +80,7 @@ class BankSlip extends Model
                 "data_nascimento" => $data['birthday'],
                 "email" => $data['email'],
                 "endereco" => [
-                    "cep" =>         self::Mask("#####-###", $data['address']['zip']),
+                    "cep" =>         Utils::Mask("#####-###", $data['address']['zip']),
                     "rua" =>         $data['address']['street'],
                     "numero" =>      $data['address']['number'],
                     "complemento" => $data['address']['complement'],
@@ -128,16 +128,4 @@ class BankSlip extends Model
         
         return $response;
     } 
-
-    function Mask($mask,$str){
-
-        $str = str_replace(" ","",$str);
-    
-        for($i=0;$i<strlen($str);$i++){
-            $mask[strpos($mask,"#")] = $str[$i];
-        }
-    
-        return $mask;
-    
-    }
 }

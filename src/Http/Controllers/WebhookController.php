@@ -8,7 +8,7 @@ use Illuminate\Routing\Controller;
 use Caiocesar173\Aprobank\Http\Libraries\Utils;
 use Caiocesar173\Aprobank\Http\Libraries\Validation; 
 use Caiocesar173\Aprobank\Http\Libraries\ApiReturn;
-
+use Caiocesar173\Aprobank\Models\BankSlip;
 use Caiocesar173\Aprobank\Models\Webhook;
 
 
@@ -37,5 +37,17 @@ class WebhookController extends Controller
             return ApiReturn::ErrorMessage("Dados invalidos");
 
         return Webhook::deleteWebhook($id);
+    }
+
+    public static function webhook(Request $request)
+    {
+        if(isset($request['modulo']))
+        {
+            if(isset($request['tipo']))
+                if($request['tipo'] === 'boleto')
+                    return BankSlip::BankSlipHook($request);
+        }
+
+        return [];
     }
 }

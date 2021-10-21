@@ -13,11 +13,14 @@ class Utils{
 
     public static function formatResponse($response, $type)
     {
-        if($type === 'bank_slip' )
+        if($type === 'bank_slip')
             return self::formatBankSlip($response);
     }
 
     public static function Mask($mask,$str){
+
+        if(str_contains($str, '-'))
+            return $str;
 
         $str = str_replace(" ","",$str);
     

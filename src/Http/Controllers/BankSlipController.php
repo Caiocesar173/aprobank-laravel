@@ -28,7 +28,7 @@ class BankSlipController extends Controller
             return BankSlip::create($request);
         }
 
-        return self::createPayer($request);
+        return $this->createPayer($request);
     }
 
     public function createPayer($request)

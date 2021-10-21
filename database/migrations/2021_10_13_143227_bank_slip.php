@@ -39,6 +39,7 @@ class BankSlip extends Migration
             $table->tinyInteger('discountType')->nullable();
             $table->decimal('discountValue', 11, 2)->nullable();
             $table->dateTime('dueDateDiscount')->nullable();
+            $table->dateTime('payed_at')->nullable();
             
             $table->timestamps();
         });

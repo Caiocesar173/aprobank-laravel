@@ -39,6 +39,7 @@ class BankSlip extends Model
         'discountType',
         'discountValue',
         'dueDateDiscount',
+        'payed_at'
     ];
 
 
@@ -105,6 +106,70 @@ class BankSlip extends Model
         return Utils::formatResponse($response, self::$type);
     }  
 
+    public static function edit($id, $data) 
+    {
+        $bankslip = self::find($id);
+
+        if($bankslip == null)
+            return 'bankslip not found';
+
+        if(isset($data['status']))
+            $bankslip->status = $data['status'];
+
+        if(isset($data['digitableLine']))
+            $bankslip->digitableLine = $data['digitableLine'];
+
+        if(isset($data['url']))
+            $bankslip->url = $data['url'];
+
+        if(isset($data['documentNumber']))
+            $bankslip->documentNumber = $data['documentNumber'];
+
+        if(isset($data['value']))
+            $bankslip->value = $data['value'];
+
+        if(isset($data['description']))
+            $bankslip->description = $data['description'];
+
+        if(isset($data['instruction1']))
+            $bankslip->instruction1 = $data['instruction1'];
+
+        if(isset($data['instruction2']))
+            $bankslip->instruction2 = $data['instruction2'];
+
+        if(isset($data['instruction3']))
+            $bankslip->instruction3 = $data['instruction3'];
+
+        if(isset($data['dueDate']))
+            $bankslip->dueDate = $data['dueDate'];
+
+        if(isset($data['penaltyType']))
+            $bankslip->penaltyType = $data['penaltyType'];
+
+        if(isset($data['penltyValue']))
+            $bankslip->penltyValue = $data['penltyValue'];
+
+        if(isset($data['feeType']))
+            $bankslip->feeType = $data['feeType'];
+
+        if(isset($data['feeValue']))
+            $bankslip->feeValue = $data['feeValue'];
+
+        if(isset($data['discountType']))
+            $bankslip->discountType = $data['discountType'];
+
+        if(isset($data['discountValue']))
+            $bankslip->discountValue = $data['discountValue'];
+
+        if(isset($data['dueDateDiscount']))
+            $bankslip->dueDateDiscount = $data['dueDateDiscount'];
+
+        if(isset($data['payed_at']))
+            $bankslip->payed_at = $data['payed_at'];
+ 
+        return $bankslip->save();
+    }
+
     public static function list($id = null)
     {
         $url = self::$url;
@@ -127,5 +192,40 @@ class BankSlip extends Model
             return ApiReturn::ErrorMessage('Não foi possivel excluir o boleto');
         
         return $response;
-    } 
+    }  
+
+    public static function BankSlipHook($request)
+    {
+        if(isset($request['conteudo']))
+        {
+            $id = $request['conteudo']['id'];
+            $response = self::list($id);
+            $response = self::FormatHook($response);
+            return self::edit($id, $response, 'bank_slip');
+        }            
+    }
+
+    public static function FormatHook($response)
+    {
+        return [
+            'status'         => isset($response['status']) ? $response['status'] : null,
+            'digitableLine'  => isset($response['linha_digitavel']) ? $response['linha_digitavel'] : null,
+            'url'            => isset($response['url']) ? $response['url'] : null,
+            'documentNumber' => isset($response['numero_documento']) ? $response['numero_documento'] : null,
+            'value'          => isset($response['valor']) ? $response['valor'] : null,
+            'description'    => isset($response['descricao']) ? $response['descricao'] : null,
+            'instruction1'   => isset($response['instrucao1']) ? $response['instrucao1'] : null,
+            'instruction2'   => isset($response['instrucao2']) ? $response['instrucao2'] : null,
+            'instruction3'   => isset($response['instrucao3']) ? $response['instrucao3'] : null,
+            'dueDate'        => isset($response['data_vencimento']) ? $response['data_vencimento'] : null,
+            'penaltyType'    => isset($response['tipo_multa']) ? $response['tipo_multa'] : null,
+            'penltyValue'    => isset($response['valor_multa']) ? $response['valor_multa'] : null,
+            'feeType'        => isset($response['tipo_juros']) ? $response['tipo_juros'] : null,
+            'feeValue'       => isset($response['valor_juros']) ? $response['valor_juros'] : null,
+            'discountType'   => isset($response['tipo_desconto']) ? $response['tipo_desconto'] : null,
+            'discountValue'  => isset($response['valor_desconto']) ? $response['valor_desconto'] : null,
+            'dueDateDiscount'=> isset($response['data_limite_valor_desconto']) ? $response['data_limite_valor_desconto'] : null,
+            'payed_at'       => isset($response['data_pagamento']) ? $response['data_pagamento'] : null,
+        ];      
+    }
 }

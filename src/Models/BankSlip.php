@@ -97,21 +97,22 @@ class BankSlip extends Model
             "instrucao3" => $data['instruction3'],
             "data_vencimento" => $data['dueDate'],
         ];
-        
-        $response = Aprobank::post(self::$url, $payload);
 
-        if(!isset($response['transaction_id']))
-            return ApiReturn::ErrorMessage('Não foi possivel criar o boleto');
+        $response = Aprobank::post(self::$url, $payload);
+        if(isset($response['error']))
+            throw new \Exception($response['error']);
 
         return Utils::formatResponse($response, self::$type);
     }  
 
-    public static function edit($id, $data) 
+    public function edit($id, $data) 
     {
-        $bankslip = self::find($id);
+        $bankslip = $this->find($id);
 
         if($bankslip == null)
-            return 'bankslip not found';
+            throw new \Exception( 'bankslip not found' );
+
+        $bankslip = $bankslip->first();
 
         if(isset($data['status']))
             $bankslip->status = $data['status'];
@@ -167,7 +168,7 @@ class BankSlip extends Model
         if(isset($data['payed_at']))
             $bankslip->payed_at = $data['payed_at'];
  
-        return $bankslip->save();
+        return $bankslip->save() ? 'success' : false;
     }
 
     public static function list($id = null)
@@ -194,14 +195,14 @@ class BankSlip extends Model
         return $response;
     }  
 
-    public static function BankSlipHook($request)
+    public function BankSlipHook($request)
     {
         if(isset($request['conteudo']))
         {
             $id = $request['conteudo']['id'];
             $response = self::list($id);
             $response = self::FormatHook($response);
-            return self::edit($id, $response, 'bank_slip');
+            return $this->edit($id, $response);
         }            
     }
 

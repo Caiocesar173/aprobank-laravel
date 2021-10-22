@@ -75,11 +75,11 @@ class BackLog extends Model
 
     public static function deleteBackLog($id)
     {
-        $deleteBackLog = self::find($id);
+        $backlog = self::find($id);
 
-        if($deleteBackLog != null)
+        if($backlog != null)
             return $backlog->save() ? true : false;
 
         return "BackLog não encontrado";
-    } 
+    }
 }

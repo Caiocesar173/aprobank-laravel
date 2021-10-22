@@ -63,10 +63,9 @@ class BankSlip extends Model
         ];
 
         $response = Aprobank::post(self::$url, $payload);
-        return $response->json();
 
-        if(!isset($response['transaction_id']))
-            return ApiReturn::ErrorMessage('Não foi possivel criar o Boleto');
+        if(isset($response['errors']))
+            return $response['errors'];
 
         return Utils::formatResponse($response, self::$type);
     }
@@ -99,8 +98,9 @@ class BankSlip extends Model
         ];
 
         $response = Aprobank::post(self::$url, $payload);
-        if(isset($response['error']))
-            throw new \Exception($response['error']);
+        if(isset($response['errors']))
+            return $response['errors'];
+            //throw new \Exception($response['errors']);
 
         return Utils::formatResponse($response, self::$type);
     }  
@@ -110,7 +110,7 @@ class BankSlip extends Model
         $bankslip = $this->find($id);
 
         if($bankslip == null)
-            throw new \Exception( 'bankslip not found' );
+            return 'bankslip not found' ;
 
         $bankslip = $bankslip->first();
 
@@ -203,7 +203,7 @@ class BankSlip extends Model
             $response = self::list($id);
             $response = self::FormatHook($response);
             return $this->edit($id, $response);
-        }            
+        }
     }
 
     public static function FormatHook($response)

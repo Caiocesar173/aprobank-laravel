@@ -45,7 +45,7 @@ class WebhookController extends Controller
         {
             if(isset($request['tipo']))
                 if($request['tipo'] === 'boleto')
-                    return BankSlip::BankSlipHook($request);
+                    return (new BankSlip())->BankSlipHook($request);
         }
 
         return [];

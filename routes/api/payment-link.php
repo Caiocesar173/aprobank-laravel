@@ -1,6 +1,6 @@
 <?php
 use Caiocesar173\Aprobank\Http\Controllers\PaymentLinkController;
-
+use Illuminate\Support\Facades\Route;
 
 Route::middleware('api')->prefix('payment')->group(function () {
     Route::prefix('link')->group(function () {

@@ -9,6 +9,7 @@ use Caiocesar173\Aprobank\Http\Libraries\ApiReturn;
 use Caiocesar173\Aprobank\Http\Libraries\Utils;
 
 use Caiocesar173\Aprobank\Classes\Aprobank;
+use Caiocesar173\Aprobank\Events\BankSlipHookEvent;
 
 class BankSlip extends Model
 {
@@ -65,9 +66,9 @@ class BankSlip extends Model
         $response = Aprobank::post(self::$url, $payload);
 
         if(isset($response['errors']))
-            return $response['errors'];
+            return [$response['errors'], false];
 
-        return Utils::formatResponse($response, self::$type);
+        return [Utils::formatResponse($response, self::$type), true];
     }
     
     public static function createPayer($data)
@@ -99,10 +100,9 @@ class BankSlip extends Model
 
         $response = Aprobank::post(self::$url, $payload);
         if(isset($response['errors']))
-            return $response['errors'];
-            //throw new \Exception($response['errors']);
+           return [$response['errors'], false];
 
-        return Utils::formatResponse($response, self::$type);
+        return [Utils::formatResponse($response, self::$type), true];
     }  
 
     public function edit($id, $data) 
@@ -168,21 +168,18 @@ class BankSlip extends Model
         if(isset($data['payed_at']))
             $bankslip->payed_at = $data['payed_at'];
  
-        return $bankslip->save() ? 'success' : false;
+        return $bankslip->save() ? ['Boleto editado com sucesso', true] : ['Não foi possivel editar o Boleto', false];
     }
 
     public static function list($id = null)
     {
-        $url = self::$url;
-        if($id != null)
-            $url = self::$url.'/'.$id;
-
+        $url = ($id != null) ? self::$url."/$id" : self::$url;
         $response = Aprobank::get($url);
 
         if(isset($response['data']) || isset($response['id']))
-            return $response;
+            return [$response, true];
         
-        return ApiReturn::ErrorMessage('Não foi possivel listar');
+        return ['Não foi possivel listar', false];
     }
 
     public static function deleteBankSlip($id)
@@ -190,9 +187,9 @@ class BankSlip extends Model
         $response = Aprobank::delete( self::$url.'/'.$id );
 
         if(!isset($response['success']))
-            return ApiReturn::ErrorMessage('Não foi possivel excluir o boleto');
+            return ['Não foi possivel excluir o boleto', false];
         
-        return $response;
+        return ['Boleto excluido com sucesso', true];
     }  
 
     public function BankSlipHook($request)
@@ -202,7 +199,7 @@ class BankSlip extends Model
             $id = $request['conteudo']['id'];
             $response = self::list($id);
             $response = self::FormatHook($response);
-            return $this->edit($id, $response);
+            return $this->edit($id, $response)[1] ? event(new BankSlipHookEvent($this->find($id))) : false;
         }
     }
 

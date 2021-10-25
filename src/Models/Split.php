@@ -3,13 +3,9 @@
 namespace Caiocesar173\Aprobank\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\DB;
-
-use Caiocesar173\Aprobank\Http\Libraries\ApiReturn;
-use Caiocesar173\Aprobank\Classes\Aprobank;
 
 
-class PaymentSplit extends Model
+class Split extends Model
 {
     protected $table = 'split';
     protected $primaryKey = 'id';

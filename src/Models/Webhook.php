@@ -31,19 +31,20 @@ class Webhook extends Model
         $response = Aprobank::post(self::$url, $payload);
 
         if(!isset($response['id']))
-            return ApiReturn::ErrorMessage('Não foi possivel criar a transferencia');
+            return ['Não foi possivel criar o webhook', false];
 
-        return $response;
+        return [$response, true];
     }
 
-    public static function list($id = null)
+    public static function list()
     {
+        #Aprobank doesn't support searching by Id.
         $response = Aprobank::get(self::$url);
 
         if(isset($response['data']) || isset($response['id']))
-            return $response;
+            return [$response, true];
         
-        return ApiReturn::ErrorMessage('Não foi possivel listar');
+        return ['Não foi possivel listar', false];
     }
 
     public static function deleteWebhook($id)
@@ -51,8 +52,8 @@ class Webhook extends Model
         $response = Aprobank::delete( self::$url.'/'.$id );
 
         if(!isset($response['success']))
-            return ApiReturn::ErrorMessage('Não foi possivel excluir o plano');
+            return ['Não foi possivel excluir o webhook', false];
         
-        return $response;
+        return [$response, true];
     } 
 }

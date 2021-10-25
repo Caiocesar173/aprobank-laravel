@@ -31,18 +31,18 @@ class Withdraw extends Model
         $response = Aprobank::post(self::$url, $payload);
 
         if(!isset($response['conta_id']))
-            return ApiReturn::ErrorMessage('Não foi possivel criar o saque');
+            return ['Não foi possivel criar o saque', false];
 
-        return $response;
+        return [$response, true];
     }
 
-    public static function list($id = null)
+    public static function list()
     {
         $response = Aprobank::get(self::$url);
 
         if(isset($response['data']) || isset($response['id']))
-            return $response;
+            return [$response, true];
         
-        return ApiReturn::ErrorMessage('Não foi possivel listar');
+        return ['Não foi possivel listar', false];
     }
 }

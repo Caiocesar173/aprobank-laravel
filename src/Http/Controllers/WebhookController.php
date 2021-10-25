@@ -26,9 +26,9 @@ class WebhookController extends Controller
         return Webhook::create($request);
     }
 
-    public function list($id = null)
+    public function list()
     {
-        return Webhook::list($id);
+        return Webhook::list();
     }
 
     public function delete($id)

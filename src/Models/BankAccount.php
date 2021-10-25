@@ -36,9 +36,9 @@ class BankAccount extends Model
         $response = Aprobank::post(self::$url, $payload);
 
         if(!isset($response['conta_id']))
-            return ApiReturn::ErrorMessage('Não foi possivel criar a conta bancaria');
+            return ['Não foi possivel criar a conta bancaria', false];
 
-        return $response->json();
+        return [$response, true];
     }
 
     public static function list($id = null)
@@ -50,9 +50,9 @@ class BankAccount extends Model
         $response = Aprobank::get($url);
 
         if(is_array($response->json()))
-            return $response->json();
+            return [$response, true];
         
-        return ApiReturn::ErrorMessage('Não foi possivel listar');
+        return ['Não foi possivel listar', false];
     }
 
     public static function deleteBankAccount($id)
@@ -60,8 +60,8 @@ class BankAccount extends Model
         $response = Aprobank::delete( self::$url.'/'.$id );
 
         if(!isset($response['success']))
-            return ApiReturn::ErrorMessage('Não foi possivel excluir a conta bancaria');
+            return ['Não foi possivel excluir a conta bancaria', false];
         
-        return $response->json();
+        return [$response, true];
     }
 }

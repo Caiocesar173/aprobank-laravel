@@ -1,6 +1,6 @@
 <?php
 use Caiocesar173\Aprobank\Http\Controllers\PayerController;
-
+use Illuminate\Support\Facades\Route;
 
 Route::middleware('api')->prefix('payer')->group(function () {
     Route::post('/', [PayerController::class, 'create']);

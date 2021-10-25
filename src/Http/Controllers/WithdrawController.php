@@ -26,8 +26,8 @@ class WithdrawController extends Controller
         return Withdraw::create($request);
     }
 
-    public function list($id = null)
+    public function list()
     {
-        return Withdraw::list($id);
+        return Withdraw::list();
     }
 }

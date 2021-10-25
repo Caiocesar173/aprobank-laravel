@@ -31,22 +31,19 @@ class Transfers extends Model
         $response = Aprobank::post(self::$url, $payload);
 
         if(!isset($response['id']))
-            return ApiReturn::ErrorMessage('Não foi possivel criar a transferencia');
+            return ['Não foi possivel criar a transferencia', false];
 
-        return $response;
+        return [$response, true];
     }
 
     public static function list($id = null)
     {
-        $url = self::$url;
-        if($id != null)
-            $url = self::$url.'/'.$id;
-
+        $url = ($id != null) ? self::$url."/$id" : self::$url;
         $response = Aprobank::get($url);
 
         if(isset($response['data']) || isset($response['id']))
-            return $response;
+            return [$response, true];
         
-        return ApiReturn::ErrorMessage('Não foi possivel listar');
+        return ['Não foi possivel listar', false];
     }
 }

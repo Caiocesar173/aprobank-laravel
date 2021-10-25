@@ -18,9 +18,9 @@ class ProfileController extends Controller
     { 
     }
 
-    public function list($id = null)
+    public function list()
     {
-        return Profile::list($id);
+        return Profile::list();
     }
 
     public function edit(Request $request)

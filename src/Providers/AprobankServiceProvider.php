@@ -8,8 +8,8 @@ class AprobankServiceProvider extends ServiceProvider
 {
     public function boot()
     {
-        self::loadRoutesFrom(__DIR__.'/../../routes/aprobank.php');
-        self::loadViewsFrom(__DIR__.'/../../resources/views', 'aprobank');
+        $this->loadRoutesFrom(__DIR__.'/../../routes/aprobank.php');
+        $this->loadViewsFrom(__DIR__.'/../../resources/views', 'aprobank');
         $this->loadMigrationsFrom(__DIR__ .'/../../database/migrations');
     }
 }

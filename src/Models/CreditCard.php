@@ -37,50 +37,45 @@ class CreditCard extends Model
         ];
 
         $response = Aprobank::post(self::$url, $payload);
-
         if(!isset($response['conta_id']))
-            return ApiReturn::ErrorMessage('Não foi possivel criar o Cartão');
+            return ['Não foi possivel criar o Cartão', false];
 
-        return $response;
+        return [$response, true];
     }
 
     public static function createSimple($data)
     {
         $payload = [
-            "documento" => Utils::clean($date['document']),
-            "celular" => $date['cellphone'],
-            "parcelas" => $date['parcel'],
-            "valor" => $date['value'],
-            "captura" => $date['capture'],
+            "documento" => Utils::clean($data['document']),
+            "celular" => $data['cellphone'],
+            "parcelas" => $data['parcel'],
+            "valor" => $data['value'],
+            "captura" => $data['capture'],
             "cartao" => [
-                "nome" => $date['name'],
-                "numero" => $date['number'],
-                "cvv" => $date['cvv'],
-                "mes" => $date['month'],
-                "ano" => $date['year'],
+                "nome" => $data['name'],
+                "numero" => $data['number'],
+                "cvv" => $data['cvv'],
+                "mes" => $data['month'],
+                "ano" => $data['year'],
             ]
         ];
 
         $response = Aprobank::post(self::$url, $payload);
-
         if(!isset($response['conta_id']))
-            return ApiReturn::ErrorMessage('Não foi possivel criar o Cartão');
+            return ['Não foi possivel criar o cartão', false];
 
-        return $response;
+        return [$response, true];
     }
 
     public static function list($id = null)
     {
-        $url = self::$url;
-        if($id != null)
-            $url = (self::$url.'/'.$id);
-
+        $url = ($id != null) ? self::$url."/$id" : self::$url;
         $response = Aprobank::get($url);
 
         if(isset($response['data']) || isset($response['id']))
-            return $response;
+            return [$response, true];
         
-        return ApiReturn::ErrorMessage('Não foi possivel listar');
+        return ['Não foi possivel listar', false];
     }
 
     public static function charge($data)
@@ -92,9 +87,9 @@ class CreditCard extends Model
         $response = Aprobank::post(self::$url.'/'.$data['id'], $payload);
 
         if(!isset($response['id']))
-            return ApiReturn::ErrorMessage('Não foi possivel criar o Cartão');
+            return ['Não foi possivel cobrar', false];
 
-        return $response;
+        return [$response, true];
     }
 
     public static function chargeback($data)
@@ -102,8 +97,8 @@ class CreditCard extends Model
         $response = Aprobank::post(self::$url.'/'.$data['id']);
 
         if(!isset($response['success']))
-            return ApiReturn::ErrorMessage('Não foi possivel criar o Cartão');
+            return ['Não foi possivel extornar a transação', false];
 
-        return $response;
+        return [$response, true];
     }
 }

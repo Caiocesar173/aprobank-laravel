@@ -25,7 +25,7 @@ class BankUser extends Model
         $bank_user->user_id = $data['user_id'];
         $bank_user->uuid_external = $data['uuid_external'];
         
-        return $bank_user->save() ? true : false;
+        return $bank_user->save() ? ['Usuario criado com sucesso', true] : ['Não foi possivel criar o usuario', false];
     }
     
     public static function list($id = null)
@@ -35,16 +35,15 @@ class BankUser extends Model
         else
             $bank_user = self::all();
         
-        return  $bank_user;
+        return ( !empty($bank_user) || !isset($bank_user) ) ? [$bank_user, true] : ['Não foi possivel listar', false];
     }
    
     public static function deleteBankUser($id)
     {
         $deleteBankUser = self::find($id);
-
         if($deleteBankUser != null)
-            return $bank_user->save() ? true : false;
+            return $deleteBankUser->delete() ? ['Usuario excluido com sucesso', true] : ['Não foi possivel excluir o usuario', false];
 
-        return "BankUser não encontrado";
+        return ['Usuario não encontrado', false];
     } 
 }

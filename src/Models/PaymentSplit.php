@@ -39,11 +39,11 @@ class PaymentSplit extends Model
         ];
 
         $response = Aprobank::post(self::$url, $payload);
-        return $response->json();
-
+        
         if(!isset($response['conta_id']))
-            return ApiReturn::ErrorMessage('Não foi possivel criar o saque');
-
+            return ['Não foi possivel criar o split', false];
+        
+        return [$response, true];
     }
 
     public static function list($id = null)
@@ -51,9 +51,9 @@ class PaymentSplit extends Model
         $response = Aprobank::get( self::$url.'/'.$id );
 
         if(isset($response['data']) || isset($response['id']))
-            return $response;
+            return [$response, true];
         
-        return ApiReturn::ErrorMessage('Não foi possivel listar');
+        return ['Não foi possivel listar', false];
     }
 
     public static function deletePaymentSplit($id)
@@ -61,8 +61,8 @@ class PaymentSplit extends Model
         $response = Aprobank::delete( self::$url.'/'.$id );
 
         if(!isset($response['success']))
-            return ApiReturn::ErrorMessage('Não foi possivel excluir o plano');
+            return ['Não foi possivel excluir o split', false];
         
-        return $response;
+        return [$response, true];
     } 
 }

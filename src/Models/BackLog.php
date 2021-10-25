@@ -39,7 +39,8 @@ class BackLog extends Model
         if(isset($data['payload']))
             $backlog->payload = json_encode( $data['payload'] );
 
-        return $backlog->save() ? true : false;
+        return $backlog->save() ? ['Log criado com sucesso', true] : ['Não foi possivel criar o log', false];
+
     }
     
     public static function list($id = null)
@@ -49,7 +50,7 @@ class BackLog extends Model
         else
             $backlog = self::all();
         
-        return  $backlog;
+        return ( !empty($backlog) || !isset($backlog) ) ? [$backlog, true] : ['Não foi possivel listar', false];
     }
 
     public static function edit($id)
@@ -70,7 +71,7 @@ class BackLog extends Model
         if(isset($data['response']))        
             $backlog->response = $data['response'];
 
-            return $backlog->save() ? true : false;
+        return $backlog->save() ? ['Log editado com sucesso', true] : ['Não foi possivel editar o log', false];
     }
 
     public static function deleteBackLog($id)
@@ -78,8 +79,8 @@ class BackLog extends Model
         $backlog = self::find($id);
 
         if($backlog != null)
-            return $backlog->save() ? true : false;
+            return $backlog->save() ? ['Log excluido com sucesso', true] : ['Não foi possivel excluir o log', false];
 
-        return "BackLog não encontrado";
+        return ["BackLog não encontrado", false];
     }
 }

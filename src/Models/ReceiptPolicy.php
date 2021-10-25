@@ -29,8 +29,8 @@ class ReceiptPolicy extends Model
         $response = Aprobank::post(self::$url, $payload);
 
         if(!isset($response['conta_id']))
-            return ApiReturn::ErrorMessage('Não foi possivel criar o saque');
+            return ['Não foi possivel definir o saque automatico', false];
 
-        return $response;
+        return [$response, true];
     }
 }

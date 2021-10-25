@@ -20,14 +20,14 @@ class Profile extends Model
     ];
 
 
-    public static function list($id = null)
+    public static function list()
     {
         $response = Aprobank::get(self::$url);
 
         if(isset($response['data']) || isset($response['id']))
-            return $response->json();
+            return [$response, true];
         
-        return ApiReturn::ErrorMessage('Não foi possivel listar');
+        return ['Não foi possivel listar', false];
     }
 
     public static function edit($data)
@@ -60,8 +60,8 @@ class Profile extends Model
         $response = Aprobank::put(self::$url, $payload);
 
         if(!isset($response['id']))
-            return ApiReturn::ErrorMessage('Não foi possivel editar o perfil');
+            return ['Não foi possivel editar o perfil', false];
             
-        return $response->json();
+        return [$response, true];
     }
 }

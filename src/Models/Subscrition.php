@@ -30,23 +30,20 @@ class Subscrition extends Model
         $response = Aprobank::post(self::$url, $payload);
 
         if(!isset($response['conta_id']))
-            return ApiReturn::ErrorMessage('Não foi possivel criar a assinatura');
+            return ['Não foi possivel criar a assinatura', false];
 
-        return $response;
+        return [$response, true];
     }
 
     public static function list($id = null)
     {
-        $url = self::$url;
-        if($id != null)
-            $url = self::$url.'/'.$id;
-
+        $url = ($id != null) ? self::$url."/$id" : self::$url;
         $response = Aprobank::get($url);
 
         if(isset($response['data']) || isset($response['id']))
-            return $response;
+            return [$response, true];
         
-        return ApiReturn::ErrorMessage('Não foi possivel listar');
+        return ['Não foi possivel listar', false];
     }
 
     public static function edit($id, $data)
@@ -55,12 +52,12 @@ class Subscrition extends Model
             "plano_id" => $data['planId']
         ];
 
-        $response = Aprobank::put(self::$url.'/'.$id);
+        $response = Aprobank::put(self::$url.'/'.$id, $payload);
 
         if(isset($response['data']) || isset($response['id']))
-            return $response;
+            return [$response, true];
         
-        return ApiReturn::ErrorMessage('Não foi possivel listar');
+        return ['Não foi possivel editar a assinatura', false];
     }
 
     public static function deleteSubscrition($id)
@@ -68,8 +65,8 @@ class Subscrition extends Model
         $response = Aprobank::delete( self::$url.'/'.$id );
 
         if(!isset($response['success']))
-            return ApiReturn::ErrorMessage('Não foi possivel excluir a assinatura');
+            return ['Não foi possivel excluir a assinatura', false];
         
-        return $response;
+        return [$response, true];
     } 
 }

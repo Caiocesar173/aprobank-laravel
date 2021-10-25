@@ -1,6 +1,6 @@
 <?php
 use Caiocesar173\Aprobank\Http\Controllers\BankSlipController;
-
+use Illuminate\Support\Facades\Route;
 
 Route::middleware('api')->prefix('bank')->group(function () {
     Route::prefix('slip')->group(function () {

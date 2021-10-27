@@ -25,11 +25,11 @@ class AprobankServiceProvider extends ServiceProvider
     public function register()
     {
         Event::listen(MigrationsStarted::class, function () {
-            DB::statement('SET GLOBAL sql_require_primary_key=0;');
+            DB::statement('SET sql_require_primary_key=0;');
         });
 
         Event::listen(MigrationsEnded::class, function () {
-            DB::statement('SET GLOBAL sql_require_primary_key=1;');
+            DB::statement('SET sql_require_primary_key=1;');
         });
     }
 }

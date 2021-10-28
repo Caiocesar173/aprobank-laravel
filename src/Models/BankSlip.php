@@ -105,14 +105,12 @@ class BankSlip extends Model
         return [Utils::formatResponse($response, self::$type), true];
     }  
 
-    public function edit($id, $data) 
+    public function edit($id, $data, string $type = 'id') 
     {
-        $bankslip = $this->find($id);
+        $bankslip = $this->select('*')->where("$type", '=', "$id")->first();
 
         if($bankslip == null)
-            return 'bankslip not found' ;
-
-        $bankslip = $bankslip->first();
+            return 'bankslip not found';
 
         if(isset($data['status']))
             $bankslip->status = $data['status'];
@@ -195,11 +193,17 @@ class BankSlip extends Model
     public function BankSlipHook($request)
     {
         if(isset($request['conteudo']))
-        {
-            $id = $request['conteudo']['id'];
-            $response = self::list($id);
+        {   
+            $uuid_external = $request['conteudo']['id'];
+            $bankslip = self::select('*')->where("uuid_external", '=', "$uuid_external")->first();
+            
+            if($bankslip == null)
+                return ['bankslip not found', false];
+
+            $response = self::list($bankslip->id);
             $response = self::FormatHook($response);
-            return $this->edit($id, $response)[1] ? event(new BankSlipHookEvent($this->find($id))) : false;
+
+            return $this->edit($bankslip->id, $response)[1] ? event(new BankSlipHookEvent( $bankslip )) : false;
         }
     }
 

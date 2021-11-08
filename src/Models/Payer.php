@@ -41,7 +41,8 @@ class Payer extends Model
         if(isset($response['errors']))
             return [Utils::ArrayFlatten($response['errors']), false];
         
-        return BankUser::create(Utils::formatResponse($response, 'payer'), $model);
+        $payer = Utils::formatResponse($response, 'payer');
+        return BankUser::create($payer);
     }
 
     public static function list($id = null, $payload = null)

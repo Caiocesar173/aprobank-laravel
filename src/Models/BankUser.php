@@ -24,11 +24,11 @@ class BankUser extends Model
 
 
 
-    public static function create($data, $model)
+    public static function create($data)
     {
         $bank_user = new self();
-        $bank_user->responsable_type = get_class($model);
-        $bank_user->responsable_id = $model->id;
+        $bank_user->responsable_type = $data['responsable_type'];
+        $bank_user->responsable_id = $data['responsable_id'];
         $bank_user->payer_id = $data['payerId'];
 
         if(isset($data['account_id']))

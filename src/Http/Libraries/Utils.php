@@ -3,7 +3,8 @@
 namespace Caiocesar173\Aprobank\Http\Libraries;
 
 
-class Utils{
+class Utils
+{
 
     public static function clean($string) 
     {
@@ -11,13 +12,13 @@ class Utils{
         return preg_replace('/[^A-Za-z0-9\-]/', '', $string);
     }
 
-    public static function formatResponse($response, $type)
-    {
-        if($type === 'bank_slip' || $type === 'booklet')
-            return self::formatBankSlip($response);
-
-        if($type === 'payer')
-            return self::formatPayer($response);
+    public static function ArrayFlatten(array $array) {
+        $flatten = array();
+        array_walk_recursive($array, function($value) use(&$flatten) {
+            $flatten[] = $value;
+        });
+    
+        return $flatten;
     }
 
     public static function Mask($mask,$str){
@@ -32,6 +33,15 @@ class Utils{
         }
     
         return $mask;
+    }
+
+    public static function formatResponse($response, $type)
+    {
+        if($type === 'bank_slip' || $type === 'booklet')
+            return self::formatBankSlip($response);
+
+        if($type === 'payer')
+            return self::formatPayer($response);
     }
 
     private static function formatBankSlip($response)

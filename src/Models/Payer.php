@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Caiocesar173\Aprobank\Http\Libraries\ApiReturn;
 use Caiocesar173\Aprobank\Classes\Aprobank;
 use Caiocesar173\Aprobank\Http\Libraries\Utils;
-
+use Spatie\Ray\Payloads\Payload;
 
 class Payer extends Model
 {
@@ -21,7 +21,7 @@ class Payer extends Model
     ];
 
 
-    public static function create($data)
+    public static function create($data, $model)
     {
         $payload = [
             "nome" => $data['name'],
@@ -45,7 +45,7 @@ class Payer extends Model
         if(!isset($response['id']))
             return ['Não foi possivel criar o pagador', false];
         
-        return [$response, true];
+        return BankUser::create(Utils::formatResponse($response, 'payer'), $model);
     }
 
     public static function list($id = null)
@@ -113,6 +113,4 @@ class Payer extends Model
 
         return [$response, true];
     }
-
-   
 }

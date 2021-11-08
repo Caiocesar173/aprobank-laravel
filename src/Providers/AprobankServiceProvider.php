@@ -14,7 +14,9 @@ class AprobankServiceProvider extends ServiceProvider
     {
         $this->loadRoutesFrom(__DIR__ . '/../../routes/aprobank.php');
         $this->loadViewsFrom(__DIR__ . '/../../resources/views', 'aprobank');
-        $this->loadMigrationsFrom(__DIR__ . '/../../database/migrations');
+
+        if (env('APROBANK_MIGRATIONS_ENABLE') === TRUE )
+            $this->loadMigrationsFrom(__DIR__ .'/../../database/migrations');
     }
 
     /**

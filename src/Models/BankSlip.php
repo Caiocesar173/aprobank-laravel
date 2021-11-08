@@ -25,6 +25,7 @@ class BankSlip extends Model
         'digitableLine',
         'responsable',
         'client_id',
+        
         'url',
         'documentNumber',
         'value',
@@ -54,14 +55,30 @@ class BankSlip extends Model
             'instrucao2' => $data['instruction2'],
             'instrucao3' => $data['instruction3'],
             'data_vencimento' => $data['dueDate'],
-            'tipo_multa' => $data['penaltyType'],
-            'valor_multa' => $data['penltyValue'],
-            'tipo_juros' => $data['feeType'],
-            'valor_juros' => $data['feeValue'],
-            'tipo_desconto' => $data['discountType'],
-            'valor_desconto' => $data['discountValue'],
-            'data_limite_valor_desconto' => $data['dueDateDiscount']
         ];
+
+
+        if(isset($data['penaltyType']))
+            $payload['tipo_multa'] = $data['penaltyType'];
+
+        if(isset($data['penltyValue']))
+            $payload['valor_multa'] = $data['penltyValue'];
+
+        if(isset($data['feeType']))
+            $payload['tipo_juros'] = $data['feeType'];
+
+        if(isset($data['feeValue']))
+            $payload['valor_juros'] = $data['feeValue'];
+
+        if(isset($data['discountType']))
+            $payload['tipo_desconto'] = $data['discountType'];
+
+        if(isset($data['discountValue']))
+            $payload['valor_desconto'] = $data['discountValue'];
+
+        if(isset($data['dueDateDiscount']))
+            $payload['data_limite_valor_desconto'] = $data['dueDateDiscount'];
+
 
         $response = Aprobank::post(self::$url, $payload);
 
@@ -98,6 +115,28 @@ class BankSlip extends Model
             "data_vencimento" => $data['dueDate'],
         ];
 
+        if(isset($data['penaltyType']))
+            $payload['tipo_multa'] = $data['penaltyType'];
+
+        if(isset($data['penltyValue']))
+            $payload['valor_multa'] = $data['penltyValue'];
+
+        if(isset($data['feeType']))
+            $payload['tipo_juros'] = $data['feeType'];
+
+        if(isset($data['feeValue']))
+            $payload['valor_juros'] = $data['feeValue'];
+
+        if(isset($data['discountType']))
+            $payload['tipo_desconto'] = $data['discountType'];
+
+        if(isset($data['discountValue']))
+            $payload['valor_desconto'] = $data['discountValue'];
+
+        if(isset($data['dueDateDiscount']))
+            $payload['data_limite_valor_desconto'] = $data['dueDateDiscount'];
+
+
         $response = Aprobank::post(self::$url, $payload);
         if(isset($response['errors']))
            return [$response['errors'], false];
@@ -109,7 +148,7 @@ class BankSlip extends Model
     {
         $bankslip = $this->select('*')->where("$type", '=', "$id")->first();
 
-        if($bankslip == null)
+        if(is_null($bankslip))
             return 'bankslip not found';
 
         if(isset($data['status']))

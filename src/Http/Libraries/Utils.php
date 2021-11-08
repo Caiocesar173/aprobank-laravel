@@ -13,8 +13,11 @@ class Utils{
 
     public static function formatResponse($response, $type)
     {
-        if($type === 'bank_slip')
+        if($type === 'bank_slip' || $type === 'booklet')
             return self::formatBankSlip($response);
+
+        if($type === 'payer')
+            return self::formatPayer($response);
     }
 
     public static function Mask($mask,$str){
@@ -30,7 +33,6 @@ class Utils{
     
         return $mask;
     }
-
 
     private static function formatBankSlip($response)
     {
@@ -56,14 +58,22 @@ class Utils{
             
             "booklet" => $response['carne']
         ];
+        
+        if(isset($response['carne_id']))
+            $bankSlip["bookletId"] = $response['carne_id'];
 
         return $bankSlip;
     }
 
     private static function formatPayer($data)
     {
+        $payer = [
+            'payerId' => $data['id'],
+            'accountId' =>$data['conta_id'],
+            'buyerId' => $data['buyer_id'],
+            'addressId' => $data['endereco_id'],
+        ];
 
+        return $payer;
     }
-
-    
 }

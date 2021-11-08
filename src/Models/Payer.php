@@ -45,6 +45,9 @@ class Payer extends Model
         if(!isset($response['id']))
             return ['Não foi possivel criar o pagador', false];
         
+        if(isset($response['errors']))
+            return [Utils::ArrayFlatten($response['errors']), false];
+        
         return BankUser::create(Utils::formatResponse($response, 'payer'), $model);
     }
 
@@ -55,6 +58,9 @@ class Payer extends Model
 
         if(isset($response['data']) || isset($response['id']))
             return [$response, true];
+
+        if(isset($response['errors']))
+            return [Utils::ArrayFlatten($response['errors']), false];
         
         return ['Não foi possivel listar', false];
     }
@@ -81,12 +87,18 @@ class Payer extends Model
         if(!isset($response['conta_id']))
             return ['Não foi possivel editar o pagador', false];
 
+        if(isset($response['errors']))
+            return [Utils::ArrayFlatten($response['errors']), false];
+
         return [$response, true];
     }
 
     public static function deletePayer($id)
     {
         $response = Aprobank::delete( self::$url.'/'.$id );
+
+        if(isset($response['errors']))
+            return [Utils::ArrayFlatten($response['errors']), false];
 
         if(!isset($response['success']))
             return ['Não foi possivel excluir o pagador', false];
@@ -107,6 +119,9 @@ class Payer extends Model
         ];
 
         $response = Aprobank::post(self::$url.'/'.$id, $payload);
+
+        if(isset($response['errors']))
+            return [Utils::ArrayFlatten($response['errors']), false];
 
         if(!isset($response['conta_id']))
             return ['Não foi possivel editar o pagador', false];

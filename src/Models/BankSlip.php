@@ -83,7 +83,7 @@ class BankSlip extends Model
         $response = Aprobank::post(self::$url, $payload);
 
         if(isset($response['errors']))
-            return [$response['errors'], false];
+            return [Utils::ArrayFlatten($response['errors']), false];
 
         return [Utils::formatResponse($response, self::$type), true];
     }
@@ -139,7 +139,7 @@ class BankSlip extends Model
 
         $response = Aprobank::post(self::$url, $payload);
         if(isset($response['errors']))
-           return [$response['errors'], false];
+            return [Utils::ArrayFlatten($response['errors']), false];
 
         return [Utils::formatResponse($response, self::$type), true];
     }  

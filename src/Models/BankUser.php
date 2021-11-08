@@ -31,11 +31,11 @@ class BankUser extends Model
         $bank_user->responsable_id = $data['responsable_id'];
         $bank_user->payer_id = $data['payerId'];
 
-        if(isset($data['account_id']))
+        if(isset($data['accountId']))
             $bank_user->account_id = $data['accountId'];
-        if(isset($data['buyer_id']))
+        if(isset($data['buyerId']))
             $bank_user->buyer_id = $data['buyerId'];
-        if(isset($data['address_id']))
+        if(isset($data['addressId']))
             $bank_user->address_id = $data['addressId'];
         
         return $bank_user->save() ? [$bank_user, true] : ['Não foi possivel criar o usuario', false];

@@ -29,13 +29,12 @@ class BankUser extends Model
         $bank_user = new self();
         $bank_user->responsable_type = get_class($model);
         $bank_user->responsable_id = $model->id;
+        $bank_user->payer_id = $data['payerId'];
 
         if(isset($data['account_id']))
             $bank_user->account_id = $data['accountId'];
         if(isset($data['buyer_id']))
             $bank_user->buyer_id = $data['buyerId'];
-        if(isset($data['payer_id']))
-            $bank_user->payer_id = $data['payerId'];
         if(isset($data['address_id']))
             $bank_user->address_id = $data['addressId'];
         

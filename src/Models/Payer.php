@@ -3,12 +3,8 @@
 namespace Caiocesar173\Aprobank\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\DB;
-
-use Caiocesar173\Aprobank\Http\Libraries\ApiReturn;
 use Caiocesar173\Aprobank\Classes\Aprobank;
 use Caiocesar173\Aprobank\Http\Libraries\Utils;
-use Spatie\Ray\Payloads\Payload;
 
 class Payer extends Model
 {
@@ -41,9 +37,6 @@ class Payer extends Model
         ];
 
         $response = Aprobank::post(self::$url, $payload);
-
-        if(!isset($response['id']))
-            return ['Não foi possivel criar o pagador', false];
         
         if(isset($response['errors']))
             return [Utils::ArrayFlatten($response['errors']), false];
@@ -51,18 +44,39 @@ class Payer extends Model
         return BankUser::create(Utils::formatResponse($response, 'payer'), $model);
     }
 
-    public static function list($id = null)
+    public static function list($id = null, $payload = null)
     {
         $url = ($id != null) ? self::$url."/$id" : self::$url;
-        $response = Aprobank::get($url);
-
-        if(isset($response['data']) || isset($response['id']))
-            return [$response, true];
+        $response = Aprobank::get($url, $payload);
 
         if(isset($response['errors']))
             return [Utils::ArrayFlatten($response['errors']), false];
         
-        return ['Não foi possivel listar', false];
+        return [$response, true];
+    }
+
+    public static function listAll()
+    {
+        $curentPage = 1;
+        $payload = null;
+        $response = Aprobank::get(self::$url, $payload);
+        
+        if(isset($response['data']))
+        {
+            $list = [];
+            $pages = $response['last_page'];
+            for ($curentPage; $curentPage <= $pages; $curentPage++) 
+            { 
+                $payload = ["page" => $curentPage];
+                $response = Aprobank::get(self::$url, $payload);
+                if(isset($response['data']))
+                    foreach ($response['data'] as $data)
+                        array_push($list, $data);
+
+            }
+            return $list;
+        }
+        return [];
     }
 
     public static function edit($payerId, $data)
@@ -84,9 +98,6 @@ class Payer extends Model
 
         $response = Aprobank::put(self::$url.'/'.$payerId, $payload);
 
-        if(!isset($response['conta_id']))
-            return ['Não foi possivel editar o pagador', false];
-
         if(isset($response['errors']))
             return [Utils::ArrayFlatten($response['errors']), false];
 
@@ -100,9 +111,6 @@ class Payer extends Model
         if(isset($response['errors']))
             return [Utils::ArrayFlatten($response['errors']), false];
 
-        if(!isset($response['success']))
-            return ['Não foi possivel excluir o pagador', false];
-        
         return [$response, true];
     } 
 
@@ -122,9 +130,6 @@ class Payer extends Model
 
         if(isset($response['errors']))
             return [Utils::ArrayFlatten($response['errors']), false];
-
-        if(!isset($response['conta_id']))
-            return ['Não foi possivel editar o pagador', false];
 
         return [$response, true];
     }

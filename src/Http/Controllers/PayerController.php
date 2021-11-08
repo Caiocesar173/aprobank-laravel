@@ -34,6 +34,11 @@ class PayerController extends Controller
         return Payer::list($id);
     }
 
+    public function listAll($id = null)
+    {
+        return Payer::listAll();
+    }
+
     public function edit($id, Request $request)
     {
         if(!Validation::validate($request, ['name', 'celphone', 'email', 'zip', 'street', 'number', 'complement', 'district', 'city', 'state']) 

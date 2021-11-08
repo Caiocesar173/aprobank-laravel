@@ -138,6 +138,7 @@ class BankSlip extends Model
 
 
         $response = Aprobank::post(self::$url, $payload);
+        
         if(isset($response['errors']))
             return [Utils::ArrayFlatten($response['errors']), false];
 

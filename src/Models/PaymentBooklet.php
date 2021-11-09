@@ -61,22 +61,38 @@ class PaymentBooklet extends Model
         
         $response = Aprobank::post(self::$url, $payload);
 
-        if(!isset($response['conta_id']))
-            return ['Não foi possivel criar o carnê', false];
+        if(!isset($response['id']))
+            return [ ['Não foi possivel criar o carnê'], false];
+        
+        $repeat = 0;
 
+        a:
+        sleep(5);
         $slips = self::list($response['id']);
-        if(is_string($slips[0]))
-            throw new \Exception($slips[0], 1);
+        if(!$slips[1])
+            throw new \Exception(implode('\\n', $slips[0]), 1);
+
+        $slips = $slips[0];
+        if(!isset($slips['boleto']))
+            throw new \Exception('Não foi possivel econtrar o carnê de pagamento', 1);
+
+        $id = $slips['id'];
+        if(empty($slips['boleto']))
+        {
+            if($repeat === 3)
+                throw new \Exception("Não foi possivel econtrar os boletos para o carnê: $id ", 1);
+            $repeat += 1;
+            goto a;
+        }
 
         $booklet = [];
         foreach ($slips['boleto'] as $slip) 
         {
-            $slip = [Utils::formatResponse($slip, self::$type), true];
+            $slip = Utils::formatResponse($slip, self::$type);
             array_push($booklet, $slip);
         }
 
-        return $booklet;
-
+        return [$booklet, true];
     }
 
     public static function list($id = null)
@@ -87,7 +103,7 @@ class PaymentBooklet extends Model
         if(isset($response['data']) || isset($response['id']))
             return [$response, true];
         
-        return ['Não foi possivel listar', false];
+        return [ ['Não foi possivel listar'], false];
     }
 
     public static function edit($PaymentBookletId, $data)
@@ -99,7 +115,7 @@ class PaymentBooklet extends Model
         $response = Aprobank::delete( self::$url.'/'.$id );
 
         if(!isset($response['success']))
-            return ['Não foi possivel excluir o carne', false];
+            return [['Não foi possivel excluir o carne'], false];
         
         return [$response, true];
     } 

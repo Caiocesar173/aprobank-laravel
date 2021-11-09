@@ -61,8 +61,8 @@ class PaymentBooklet extends Model
         
         $response = Aprobank::post(self::$url, $payload);
 
-        if(!isset($response['id']))
-            return [ ['Não foi possivel criar o carnê'], false];
+        if(isset($response['errors']))
+            return [ Utils::ArrayFlatten($response['errors']), false];
         
         $repeat = 0;
 

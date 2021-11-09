@@ -66,7 +66,7 @@ class Utils
             "digitableLine" => $response['linha_digitavel'],
             "url" => $response['url'],
             
-            "booklet" => $response['carne']
+            "booklet" => isset($response['carne']) ? $response['carne'] : '',
         ];
         
         if(isset($response['carne_id']))

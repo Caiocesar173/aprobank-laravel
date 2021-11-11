@@ -42,6 +42,10 @@ class Payer extends Model
             return [Utils::ArrayFlatten($response['errors']), false];
         
         $payer = Utils::formatResponse($response, 'payer');
+
+        $payer['responsable_id'] = $model->id;
+        $payer['responsable_type'] = get_class($model);
+
         return BankUser::create($payer);
     }
 

@@ -14,10 +14,10 @@ class BankUserAlterId extends Migration
     public function up()
     {
         Schema::table('bank_user', function (Blueprint $table) {
-            $table->uuid('account_id')->nullable()->unique()->after('id');
-            $table->uuid('buyer_id')->nullable()->unique()->after('id');
+            $table->uuid('account_id')->nullable()->after('id');
+            $table->uuid('buyer_id')->nullable()->after('id');
             $table->uuid('payer_id')->nullable()->unique()->after('id');
-            $table->uuid('address_id')->nullable()->unique()->after('id');
+            $table->uuid('address_id')->nullable()->after('id');
             $table->nullableMorphs('responsable');
             
             $table->dropForeign('bank_user_user_id_foreign');
